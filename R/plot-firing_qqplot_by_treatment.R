@@ -1,0 +1,86 @@
+# -*- tab-width:2;indent-tabs-mode:t;show-trailing-whitespace:t;rm-trailing-spaces:t -*-
+# vi: set ts=2 noet:
+
+library(plyr)
+library(dplyr)
+library(scales)
+library(ggplot2)
+
+
+#' Firing QQ-plot by treatment 
+#'
+#'  Lattice plot for each treatment, where in each cell
+#'      the x-axis is percent of the treatment (by time)
+#'      the y-axis is percent of the total number of counts observed
+#'      a line for each neuron in the experiment with
+#'         the left endpoint anchored at the lower left
+#'         the right endpoint anchored at the upper right
+#'  
+#'  If the counts occure independently through time as is assumed in a poisson process model
+#'  then for each neuron, the line be diagonal (following the guide blue line)
+#'    If there is some lag to reach a stead state then the lines will look like they have a kink in it
+#'    if there is bursty or irregular spacing, then the spead off the diagonal will be substantial but symmetric 
+#'   
+#' firing:
+#'   data.frame with columns [neuron_index, timestamp, treatment]
+#' 
+#' experiment_tag:
+#'   identifier for the experiment used in the figure subtitle and output filename
+#'   
+#' plot_width/plot_height:
+#'   dimensions of the output plot  
+#'   
+#' returns:
+#'   the ggplot2
+#'   Saves the result to product/figures/firing_qqplot_by_treatment_<experiment_tag>_<date_code>.(pdf|png)
+#'   It save both .pdf and .png because it's easier to email etc small pngs
+#'   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
+#'   
+#'@export
+firing_qqplot_by_treatment <- function(
+  firing,
+  experiment_tag,
+  plot_width=7,
+  plot_height=4,
+  output_base="product/figures",
+  verbose=TRUE){
+  
+  data <- firing %>%
+    dplyr::group_by(neuron_index, treatment) %>%
+    dplyr::arrange(time_step) %>%
+    dplyr::mutate(cum_dist = row_number()/n()) %>%
+    dplyr::ungroup()
+  
+  ggplot2::ggplot(data=data) +
+    ggplot2::theme_bw() +
+    ggplot2::geom_abline(
+      aes(
+        slope=1,
+        intercept=0),
+      color="blue",
+      size=2) +
+    ggplot2::geom_line(
+      aes(
+        x=(time_step-begin)/(end-begin),
+        y=cum_dist,
+        group=neuron_index),
+      alpha=.8) +
+    ggplot2::facet_wrap(~treatment) +
+    ggplot2::ggtitle("QQ-plot of firing events over exposure", subtitle=experiment_tag) +
+    ggplot2::scale_x_continuous("Percent exposure", labels=scales::percent) +
+    ggplot2::scale_y_continuous("Percent counts observed", labels=scales::percent)
+  
+  pdf_path <- paste0(output_base, "/firing_qqplot_by_treatment_", experiment_tag, "_", date_code(), ".pdf")
+  if(verbose){
+    cat("Saving firing_qqplot_by_treatment  plot for experiment '", experiment_tag, "' to '", pdf_path, "'\n", sep="")
+  }
+  ggplot2::ggsave(pdf_path, width=10, height=10)
+  
+  png_path <- paste0(output_base, "/firing_qqplot_by_treatment_", experiment_tag, "_", date_code(), ".png")
+  if(verbose){
+    cat("Saving firing_qqplot_by_treatment plot for experiment '", experiment_tag, "' to '", png_path, "'\n", sep="")
+  }
+  ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
+  
+  p
+}

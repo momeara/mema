@@ -1,0 +1,13 @@
+*.o
+src/*.o-*
+*.so
+*.dll
+.RData
+.Rproj.user
+.Rhistory
+inst/doc
+.httr-oauth
+*.Rds
+*~
+Icon*
+.DS_Store

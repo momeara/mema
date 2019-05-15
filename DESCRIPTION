@@ -1,0 +1,37 @@
+Package: mema
+Type: Package
+Version: 0.0.0.9000
+Title: Multi-Electrode Midbrain Analysis
+Description: Analyze multi-electro recordings of slices of the mid-brain
+Authors@R: person(given="Matthew", family="O'Meara", email = "mattjomeara@gmail.com",
+    role = c("aut", "cre"))
+URL: http://github.com/momeara/mema
+BugReports: https://github.com/momeara/mema/issues
+Depends: 
+    R (>= 3.6.0)
+Imports: 
+    assertthat,
+    dplyr,
+    ggplot2,
+    gplots
+    magrittr,
+    plyr,
+    purrr,
+    readr,
+    reshape2,
+    seriation,
+    stringr,
+    tidyr,
+    viridis
+License: MIT + file LICENSE
+Collage: 'r_utils.R'
+    'load-firing_data.R'
+    'plot-waveform_correlation_matrix.R'
+    'plot-waveform_lattice.R'
+    'plot-firing_rate_by_treatment.R'
+    'plot-firing_rate_by_neuron.R'
+    'zinc-firing_qqplot_by_treatment.R'
+RoxygenNote: 6.1.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
