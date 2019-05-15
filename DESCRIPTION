@@ -13,7 +13,8 @@ Imports:
     assertthat,
     dplyr,
     ggplot2,
-    gplots
+    gplots,
+    knitr,
     magrittr,
     plyr,
     purrr,
@@ -32,6 +33,7 @@ Collage: 'r_utils.R'
     'plot-firing_rate_by_neuron.R'
     'zinc-firing_qqplot_by_treatment.R'
 RoxygenNote: 6.1.1
+Encoding: UTF-8
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
