@@ -35,9 +35,9 @@ plot_firing_rate_by_neuron <- function(
 		dplyr::summarize(total_exposure=sum(exposure)) %>%
 		magrittr::extract2("total_exposure")
 
-	data <- firing %>%
+	data <- experiment$firing %>%
 		dplyr::group_by(neuron_index) %>%
-		dplyr::summarize(mean_firing_rate = n() / total_exposure)
+		dplyr::summarize(mean_firing_rate = dplyr::n() / total_exposure)
 
 	ggplot2::ggplot(data=data) +
 		ggplot2::theme_bw() +
