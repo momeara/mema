@@ -48,9 +48,9 @@ plot_waveform_lattice <- function(
 	  }
 	  ggplot2::ggsave(pdf_path, width=10, height=10)
 
-	  png_path <- paste0(output_base, "/waveform_lattice_", experiment_tag, "_", date_code(), ".png")
+	  png_path <- paste0(output_base, "/waveform_lattice_", experiment$tag, "_", date_code(), ".png")
 	  if(verbose){
-	    cat("Saving waveform_lattice plot for experiment '", experiment_tag, "' to '", png_path, "'\n", sep="")
+	    cat("Saving waveform_lattice plot for experiment '", experiment$tag, "' to '", png_path, "'\n", sep="")
 	  }
 	  ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
 	}
