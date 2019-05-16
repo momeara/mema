@@ -127,7 +127,7 @@ load_experiment <- function(
 		})
 
 	if(is.null(experiment_tag)){
-		experiment_tag <- treatments_fname %>% basename %>% stringr::str_replace(".mat$", "")
+		experiment_tag <- units_fname %>% basename %>% stringr::str_replace(".mat$", "")
 	}
 
 	experiment <- list(
