@@ -3,6 +3,7 @@
 export(date_code)
 export(load_experiment)
 export(model_treatment_log_poisson)
+export(plot_firing_density_by_neuron)
 export(plot_firing_qqplot_by_treatment)
 export(plot_firing_rate_by_neuron)
 export(plot_firing_rate_by_treatment)

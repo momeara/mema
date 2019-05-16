@@ -30,6 +30,7 @@ License: MIT + file LICENSE
 Collage: 'load_firing_data.R'
     'model_treatment_log_poisson.R'
     'plot_model_marginal_effects.R'
+    'plot_firing_density_by_neuron.R'
     'plot_firing_rate_by_neuron.R'
     'plot_firing_rate_by_treatment.R'
     'plot_firing_qqplot_by_treatment.R'
