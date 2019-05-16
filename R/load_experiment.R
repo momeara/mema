@@ -133,7 +133,7 @@ load_experiment <- function(
 	experiment <- list(
 	    tag=experiment_tag,
 	    treatments=treatments,
-	    units=units,
+	    firing=firing,
 	    waveform=waveform) %>%
 	  structure(class="nema_experiment")
 	
