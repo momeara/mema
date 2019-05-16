@@ -28,7 +28,7 @@ plot_waveform_lattice <- function(
 
 	p <- ggplot2::ggplot(data=experiment$waveform) +
 		ggplot2::theme_bw() +
-		ggplot2::geom_line(mapping=aes(x=time_step, y=voltage)) +
+		ggplot2::geom_line(mapping=ggplot2::aes(x=time_step, y=voltage)) +
 		ggplot2::facet_wrap(~neuron_index) +
 		ggplot2::ggtitle("Neuron waveform cluster mean", subtitle=experiment$tag) +
 		ggplot2::scale_x_continuous("microsecond") +

@@ -44,13 +44,13 @@ plot_firing_qqplot_by_treatment <- function(
 	ggplot2::ggplot(data=data) +
 		ggplot2::theme_bw() +
 		ggplot2::geom_abline(
-			aes(
+			mapping=ggplot2::aes(
 				slope=1,
 				intercept=0),
 			color="blue",
 			size=2) +
 		ggplot2::geom_line(
-			aes(
+			mapping=ggplot2::aes(
 				x=(time_step-begin)/(end-begin),
 				y=cum_dist,
 				group=neuron_index),

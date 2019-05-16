@@ -43,7 +43,7 @@ plot_firing_rate_by_neuron <- function(
 	ggplot2::ggplot(data=data) +
 		ggplot2::theme_bw() +
 		ggplot2::geom_histogram(
-			aes(x=log(mean_firing_rate)),
+			mapping=ggplot2::aes(x=log(mean_firing_rate)),
 			bins=30) +
 		ggplot2::ggtitle("Per-neuron firing rate", subtitle=experiment$tag) +
 		ggplot2::scale_x_continuous(

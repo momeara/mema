@@ -36,14 +36,16 @@ plot_firing_rate_by_treatment <- function(
 			exposure = end[1]-begin[1]) %>%
 		dplyr::ungroup()
 
-	ggplot(data=exposure_counts) +
-		theme_bw() +
-		geom_boxplot(aes(x=treatment, y=count/exposure)) +
-		geom_jitter(aes(x=treatment, y=count/exposure), width=.15, height=0) +
-		ggtitle("Neuron Firing Rate by Condition", subtitle=experiment$tag) +
-		scale_x_discrete("Treatment") +
-		scale_y_continuous("Firings / second", breaks=c(.01, .03, .1, .3, 1.0, 3) ) +
-		coord_trans(y="log10")
+	ggplot2::ggplot(data=exposure_counts) +
+		ggplot2::theme_bw() +
+		ggplot2::geom_boxplot(
+			mapping=ggplot2::aes(x=treatment, y=count/exposure)) +
+		ggplot2::geom_jitter(
+			mapping=ggplot2::aes(x=treatment, y=count/exposure), width=.15, height=0) +
+		ggplot2::ggtitle("Neuron Firing Rate by Condition", subtitle=experiment$tag) +
+		ggplot2::scale_x_discrete("Treatment") +
+		ggplot2::scale_y_continuous("Firings / second", breaks=c(.01, .03, .1, .3, 1.0, 3) ) +
+		ggplot2::coord_trans(y="log10")
 
 
 	if(!is.null(output_base)){
