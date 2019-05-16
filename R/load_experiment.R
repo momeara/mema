@@ -41,7 +41,7 @@ load_experiment <- function(
 	### LOAD TREATMENTS
 	if(!is.null(treatments_fname)){
 		if(verbose){
-			cat("Loading treatment schedule from '", treatments_fname, "' ... \n", sep="")
+			cat("Loading treatment schedule from '", treatments_fname, "' ... ", sep="")
 		}
 
 		if(!stringr::str_detect(treatments_fname, ".csv$")){
@@ -59,7 +59,7 @@ load_experiment <- function(
 				treatment = factor(treatment, labels=treatment, levels=treatment))
 
 		if(verbose){
-			cat("Found '", nrow(treatments), "' treatments\n", sep="")
+			cat("found '", nrow(treatments), "' treatments\n", sep="")
 		}
 
 		# check each treatment isd well formed
@@ -72,7 +72,7 @@ load_experiment <- function(
 		}
 
 		# check treatments are chronological
-		for(i in 1:(nrow(treatments)-11)){
+		for(i in 1:(nrow(treatments)-1)){
 			if(treatments$end[i] > treatments$begin[i+1]){
 				stop(paste0(
 					"Treatments are out of chronological order:\n",

@@ -5,7 +5,7 @@
 \title{Firing rate by neuron}
 \usage{
 plot_firing_rate_by_neuron(exeriment, plot_width = 7, plot_height = 4,
-  output_base = "product/figures", verbose = TRUE)
+  output_base = "product/plots", verbose = TRUE)
 }
 \description{
 histogram of average firing rate
@@ -17,14 +17,14 @@ if there is spread in the average firing rate then this variation should be
  accounted for in a model of effects of the treatment on the average firing rate
 
 experiment:
-  experiment dataset loaded with mema::load_dataset(...)
+  experiment dataset loaded with mema::load_experiment(...)
 
 plot_width/plot_height:
   dimensions of the output plot
 
 returns:
   the ggplot2
-  Saves the result to product/figures/firing_rate_by_neuron_<experiment_tag>_<date_code>.(pdf|png)
+  Saves the result to product/plots/firing_rate_by_neuron_<experiment_tag>_<date_code>.(pdf|png)
   It save both .pdf and .png because it's easier to email etc small pngs
   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 }

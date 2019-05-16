@@ -5,7 +5,7 @@
 \title{Firing QQ-plot by treatment}
 \usage{
 plot_firing_qqplot_by_treatment(experiment, plot_width = 7,
-  plot_height = 4, output_base = "product/figures", verbose = TRUE)
+  plot_height = 4, output_base = "product/plots", verbose = TRUE)
 }
 \description{
 Lattice plot for each treatment, where in each cell
@@ -22,14 +22,14 @@ If the counts occure independently through time as is assumed in a poisson proce
    if there is bursty or irregular spacing, then the spead off the diagonal will be substantial but symmetric
 
 experiment:
-  experiment dataset loaded with mema::load_dataset(...)
+  experiment dataset loaded with mema::load_experiment(...)
 
 plot_width/plot_height:
   dimensions of the output plot
 
 returns:
   the ggplot2
-  Saves the result to product/figures/firing_qqplot_by_treatment_<experiment_tag>_<date_code>.(pdf|png)
+  Saves the result to product/plots/firing_qqplot_by_treatment_<experiment_tag>_<date_code>.(pdf|png)
   It save both .pdf and .png because it's easier to email etc small pngs
   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 }

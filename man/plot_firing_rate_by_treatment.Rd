@@ -5,7 +5,7 @@
 \title{Dot/boxplot plot of average firing rate by treatment}
 \usage{
 plot_firing_rate_by_treatment(exeriment, plot_width = 6,
-  plot_height = 6, output_base = "product/figures", verbose = TRUE)
+  plot_height = 6, output_base = "product/plots", verbose = TRUE)
 }
 \description{
 Make a plot where
@@ -16,14 +16,14 @@ Make a plot where
 }
 \details{
 experiment:
-  experiment dataset loaded with mema::load_dataset(...)
+  experiment dataset loaded with mema::load_experiment(...)
 
 plot_width/plot_height:
   dimensions of the output plot
 
 returns:
   the ggplot2
-  Saves the result to product/figures/firing_rate_by_treatment_<experiment_tag>_<date_code>.(pdf|png)
+  Saves the result to product/plots/firing_rate_by_treatment_<experiment_tag>_<date_code>.(pdf|png)
   It save both .pdf and .png because it's easier to email etc small pngs
   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 }

@@ -5,22 +5,22 @@
 \title{Simple lattice plot of the waveforms}
 \usage{
 plot_waveform_lattice(experiment, plot_width = 10, plot_height = 10,
-  output_base = "product/figures", verbose = TRUE)
+  output_base = "product/plots", verbose = TRUE)
 }
 \description{
-Plot a grid of figures, with x-axis in microseconds and y-axis in voltage
+Plot a grid of plots, with x-axis in microseconds and y-axis in voltage
   One for each waveform in the waveform data.frame
 }
 \details{
 experiment:
-  experiment dataset loaded with mema::load_dataset(...)
+  experiment dataset loaded with mema::load_experiment(...)
 
 plot_width/plot_height:
   dimensions of the output plot
 
 returns:
   the ggplot2
-  Saves the result to product/figures/waveform_lattice_<experiment_tag>_<date_code>.(pdf|png)
+  Saves the result to product/plots/waveform_lattice_<experiment_tag>_<date_code>.(pdf|png)
   It save both .pdf and .png because it's easier to email etc small pngs
   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 }
