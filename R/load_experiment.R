@@ -99,7 +99,7 @@ load_experiment <- function(
 	n_neurons <- dim(raw_data$Unit)[3]
 
 	if(verbose){
-		cat(" found firing data for '", n_neurons, "'\n", sep="")
+		cat(" found firing data for '", n_neurons, "' neurons\n", sep="")
 	}
 
 	firing <- raw_data$Unit[firing_dim,1,1:n_neurons] %>%
