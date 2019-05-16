@@ -63,7 +63,7 @@ plot_waveform_correlation_matrix <- function(
 
 	  png_path <- paste0(output_base, "/waveform_correlation_matrix_", experiment$tag, "_", date_code(), ".png")
 	  if(verbose){
-	    cat("Saving waveform_correlation_matrix plot for experiment '", experiment$tag, "' to '", pdf_png, "'\n", sep="")
+	    cat("Saving waveform_correlation_matrix plot for experiment '", experiment$tag, "' to '", png_path, "'\n", sep="")
 	  }
 	  png(png_path, units="in", heigh=plot_height, width=plot_width)
 	  do.call(gplots::heatmap.2,args=args)
