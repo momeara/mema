@@ -5,7 +5,7 @@
 \title{Load firing data for an experiment}
 \usage{
 load_experiment(units_fname, treatments_fname, experiment_tag = NULL,
-  save_to_disk = TRUE, verbose = TRUE)
+  save_to_file = TRUE, verbose = TRUE)
 }
 \description{
 units_fname:
@@ -25,7 +25,7 @@ experiment_tag:
   identifier for the experiment, set in the return data structure and path to save to disk
   if null (default), then use treatments_fname %>% basename %>% str_replace(".mat$", "")
 
-save_to_disk:
+save_to_file:
    if TRUE then the return value is saved to
    paste0("intermediate_data/", <experiment_tag>, ".Rdata")
 

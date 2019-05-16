@@ -19,7 +19,7 @@
 #'   identifier for the experiment, set in the return data structure and path to save to disk
 #'   if null (default), then use treatments_fname %>% basename %>% str_replace(".mat$", "")
 #'
-#' save_to_disk:
+#' save_to_file:
 #'    if TRUE then the return value is saved to
 #'    paste0("intermediate_data/", <experiment_tag>, ".Rdata")
 #'
@@ -35,7 +35,7 @@ load_experiment <- function(
 	units_fname,
 	treatments_fname,
 	experiment_tag=NULL,
-	save_to_disk=TRUE,
+	save_to_file=TRUE,
 	verbose=TRUE) {
 
 	### LOAD TREATMENTS
@@ -76,8 +76,8 @@ load_experiment <- function(
 			if(treatments$end[i] > treatments$begin[i+1]){
 				stop(paste0(
 					"Treatments are out of chronological order:\n",
-					"  treatment ", i, "='", treatments$treatment[i], " with begin='", treatments$begin[i], "', end='", treatments$end[i], "'\n",
-					"  treatment ", i+1, "='", treatments$treatment[i+1], " with begin='", treatments$begin[i+1], "', end='", treatments$end[i+1],"'"))
+					"  treatment ", i, "='", treatments$treatment[i], "' with begin='", treatments$begin[i], "', end='", treatments$end[i], "'\n",
+					"  treatment ", i+1, "='", treatments$treatment[i+1], "' with begin='", treatments$begin[i+1], "', end='", treatments$end[i+1],"'"))
 			}
 		}
 	}
