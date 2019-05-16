@@ -11,7 +11,7 @@
 #'  accounted for in a model of effects of the treatment on the average firing rate
 #'
 #' experiment:
-#'   experiment dataset loaded with mema::load_firing_dataset(...)
+#'   experiment dataset loaded with mema::load_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -23,7 +23,7 @@
 #'   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 #'
 #'@export
-firing_rate_by_neuron <- function(
+plot_firing_rate_by_neuron <- function(
 	exeriment,
 	plot_width=7,
 	plot_height=4,

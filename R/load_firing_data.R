@@ -30,7 +30,7 @@
 #'      waveform: tibble::tibble with columns [neuron_index, time_step, voltage] for each neuron
 #'
 #'@export
-load_data <- function(
+load_experiment <- function(
 	units_fname,
 	treatments_fname,
 	experiment_tag=NULL,

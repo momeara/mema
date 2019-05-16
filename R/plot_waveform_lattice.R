@@ -7,7 +7,7 @@
 #'   One for each waveform in the waveform data.frame
 #'
 #' experiment:
-#'   experiment dataset loaded with mema::load_firing_dataset(...)
+#'   experiment dataset loaded with mema::load_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -19,7 +19,7 @@
 #'   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 #'
 #'@export
-waveform_lattice <- function(
+plot_waveform_lattice <- function(
 	experiment,
 	plot_width=10,
 	plot_height=10,

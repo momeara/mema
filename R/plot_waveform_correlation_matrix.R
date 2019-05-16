@@ -6,7 +6,7 @@
 #'   Plot a correlation matrix as a heatmap between all waveforms in the experiment
 #'
 #' experiment:
-#'   experiment dataset loaded with mema::load_firing_dataset(...)
+#'   experiment dataset loaded with mema::load_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -18,7 +18,7 @@
 #'   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 #'
 #'@export
-waveform_correlation_matrix <- function(
+plot_waveform_correlation_matrix <- function(
 	experiment,
 	plot_width=10,
 	plot_height=10,

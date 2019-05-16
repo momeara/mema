@@ -10,7 +10,7 @@
 #'      overlay points for each neuron jittering horizontally to allow them to be seen more easily
 #'
 #' experiment:
-#'   experiment dataset loaded with mema::load_firing_dataset(...)
+#'   experiment dataset loaded with mema::load_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -22,7 +22,7 @@
 #'   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 #'
 #'@export
-firing_rate_by_treatment <- function(
+plot_firing_rate_by_treatment <- function(
 	exeriment,
 	plot_width=6,
 	plot_height=6,

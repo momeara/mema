@@ -16,7 +16,7 @@
 #'    if there is bursty or irregular spacing, then the spead off the diagonal will be substantial but symmetric
 #'
 #' experiment:
-#'   experiment dataset loaded with mema::load_firing_dataset(...)
+#'   experiment dataset loaded with mema::load_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -28,7 +28,7 @@
 #'   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 #'
 #'@export
-firing_qqplot_by_treatment <- function(
+plot_firing_qqplot_by_treatment <- function(
 	experiment,
 	plot_width=7,
 	plot_height=4,
