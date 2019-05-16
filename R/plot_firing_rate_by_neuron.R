@@ -24,7 +24,7 @@
 #'
 #'@export
 plot_firing_rate_by_neuron <- function(
-	exeriment,
+	experiment,
 	plot_width=7,
 	plot_height=4,
 	output_base="product/plots",
@@ -39,7 +39,7 @@ plot_firing_rate_by_neuron <- function(
 		dplyr::group_by(neuron_index) %>%
 		dplyr::summarize(mean_firing_rate = dplyr::n() / total_exposure)
 
-	ggplot2::ggplot(data=data) +
+	p <- ggplot2::ggplot(data=data) +
 		ggplot2::theme_bw() +
 		ggplot2::geom_histogram(
 			mapping=ggplot2::aes(x=log(mean_firing_rate)),

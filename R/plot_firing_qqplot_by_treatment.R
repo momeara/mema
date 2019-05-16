@@ -38,10 +38,10 @@ plot_firing_qqplot_by_treatment <- function(
 	data <- experiment$firing %>%
 		dplyr::group_by(neuron_index, treatment) %>%
 		dplyr::arrange(time_step) %>%
-		dplyr::mutate(cum_dist = row_number()/n()) %>%
+		dplyr::mutate(cum_dist = dplyr::row_number()/dplyr::n()) %>%
 		dplyr::ungroup()
 
-	ggplot2::ggplot(data=data) +
+	p <- ggplot2::ggplot(data=data) +
 		ggplot2::theme_bw() +
 		ggplot2::geom_abline(
 			mapping=ggplot2::aes(
@@ -56,7 +56,7 @@ plot_firing_qqplot_by_treatment <- function(
 				group=neuron_index),
 			alpha=.8) +
 		ggplot2::facet_wrap(~treatment) +
-		ggplot2::ggtitle("QQ-plot of firing events over exposure", subtitle=exeriment$tag) +
+		ggplot2::ggtitle("QQ-plot of firing events over exposure", subtitle=experiment$tag) +
 		ggplot2::scale_x_continuous("Percent exposure", labels=scales::percent) +
 		ggplot2::scale_y_continuous("Percent counts observed", labels=scales::percent)
 
@@ -69,15 +69,15 @@ plot_firing_qqplot_by_treatment <- function(
 	    dir.create(output_base, showWarnings = FALSE)
 	  }
 
-	  pdf_path <- paste0(output_base, "/firing_qqplot_by_treatment_", exeriment$tag, "_", date_code(), ".pdf")
+	  pdf_path <- paste0(output_base, "/firing_qqplot_by_treatment_", experiment$tag, "_", date_code(), ".pdf")
 	  if(verbose){
-	    cat("Saving firing_qqplot_by_treatment  plot for experiment '", exeriment$tag, "' to '", pdf_path, "'\n", sep="")
+	    cat("Saving firing_qqplot_by_treatment  plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
 	  }
 	  ggplot2::ggsave(pdf_path, width=10, height=10)
 
-	  png_path <- paste0(output_base, "/firing_qqplot_by_treatment_", exeriment$tag, "_", date_code(), ".png")
+	  png_path <- paste0(output_base, "/firing_qqplot_by_treatment_", experiment$tag, "_", date_code(), ".png")
 	  if(verbose){
-	    cat("Saving firing_qqplot_by_treatment plot for experiment '", exeriment$tag, "' to '", png_path, "'\n", sep="")
+	    cat("Saving firing_qqplot_by_treatment plot for experiment '", experiment$tag, "' to '", png_path, "'\n", sep="")
 	  }
 	  ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
 	}

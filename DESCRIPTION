@@ -8,9 +8,11 @@ Authors@R: person(given="Matthew", family="O'Meara", email = "mattjomeara@gmail.
 URL: http://github.com/momeara/mema
 BugReports: https://github.com/momeara/mema/issues
 Depends: 
-    R (>= 3.6.0)
+    R (>= 3.6.0),
+    Rcpp
 Imports: 
     assertthat,
+    brms,
     dplyr,
     ggplot2,
     gplots,
@@ -25,13 +27,15 @@ Imports:
     tidyr,
     viridis
 License: MIT + file LICENSE
-Collage: 'r_utils.R'
-    'load-firing_data.R'
-    'plot-waveform_correlation_matrix.R'
-    'plot-waveform_lattice.R'
-    'plot-firing_rate_by_treatment.R'
-    'plot-firing_rate_by_neuron.R'
-    'zinc-firing_qqplot_by_treatment.R'
+Collage: 'load_firing_data.R'
+    'model_treatment_log_poisson.R'
+    'plot_model_marginal_effects.R'
+    'plot_firing_rate_by_neuron.R'
+    'plot_firing_rate_by_treatment.R'
+    'plot_firing_qqplot_by_treatment.R'
+    'plot_waveform_correlation_matrix.R'
+    'plot_waveform_lattice.R'
+    'r_utils.R'
 RoxygenNote: 6.1.1
 Encoding: UTF-8
 Suggests: knitr,

@@ -23,7 +23,7 @@
 #'
 #'@export
 plot_firing_rate_by_treatment <- function(
-	exeriment,
+	experiment,
 	plot_width=6,
 	plot_height=6,
 	output_base="product/plots",
@@ -32,11 +32,11 @@ plot_firing_rate_by_treatment <- function(
 	exposure_counts <- experiment$firing %>%
 		dplyr::group_by(neuron_index, treatment) %>%
 		dplyr::summarize(
-			count = n(),
+			count = dplyr::n(),
 			exposure = end[1]-begin[1]) %>%
 		dplyr::ungroup()
 
-	ggplot2::ggplot(data=exposure_counts) +
+	p <- ggplot2::ggplot(data=exposure_counts) +
 		ggplot2::theme_bw() +
 		ggplot2::geom_boxplot(
 			mapping=ggplot2::aes(x=treatment, y=count/exposure)) +

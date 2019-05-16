@@ -24,7 +24,7 @@
 #'    paste0("intermediate_data/", <experiment_tag>, ".Rdata")
 #'
 #' returns:
-#'    an experiment S3 class with the following elements
+#'    a mema_experiment S3 class with the following elements
 #'      tag: <experiment_tag>
 #'      treatments: tibble::tibble with columns [treatment, begin, end]
 #'      firings: tibble::tibble with columns [nuron_index, time_step, treatment, begin, end] and a row for each detected firing
@@ -135,7 +135,7 @@ load_experiment <- function(
 	    treatments=treatments,
 	    firing=firing,
 	    waveform=waveform) %>%
-	  structure(class="nema_experiment")
+	  structure(class="mema_experiment")
 	
 	if(save_to_file){
 		path <- paste0("intermediate_data/", experiment_tag, ".Rdata")

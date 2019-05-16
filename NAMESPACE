@@ -2,9 +2,11 @@
 
 export(date_code)
 export(load_experiment)
+export(model_treatment_log_poisson)
 export(plot_firing_qqplot_by_treatment)
 export(plot_firing_rate_by_neuron)
 export(plot_firing_rate_by_treatment)
+export(plot_model_marginal_effects)
 export(plot_waveform_correlation_matrix)
 export(plot_waveform_lattice)
 importFrom(magrittr,"%>%")
