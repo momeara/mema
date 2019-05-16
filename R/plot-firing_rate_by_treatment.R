@@ -9,11 +9,8 @@
 #'      show a box (and wisker) plot for each treatment summarizing across neurons in the experiment
 #'      overlay points for each neuron jittering horizontally to allow them to be seen more easily
 #'
-#' firing:
-#'   data.frame with columns [neuron_index, timestamp, treatment, begin, end]
-#'
-#' experiment_tag:
-#'   identifier for the experiment used in the figure subtitle and output filename
+#' experiment:
+#'   experiment dataset loaded with mema::load_firing_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -26,14 +23,13 @@
 #'
 #'@export
 firing_rate_by_treatment <- function(
-	firing,
-	experiment_tag,
+	exeriment
 	plot_width=6,
 	plot_height=6,
 	output_base="product/figures",
 	verbose=TRUE){
 
-	exposure_counts <- firing %>%
+	exposure_counts <- experiment$firing %>%
 		dplyr::group_by(neuron_index, treatment) %>%
 		dplyr::summarize(
 			count = n(),
@@ -44,22 +40,22 @@ firing_rate_by_treatment <- function(
 		theme_bw() +
 		geom_boxplot(aes(x=treatment, y=count/exposure)) +
 		geom_jitter(aes(x=treatment, y=count/exposure), width=.15, height=0) +
-		ggtitle("Neuron Firing Rate by Condition", subtitle=experiment_tag) +
+		ggtitle("Neuron Firing Rate by Condition", subtitle=experiment$tag) +
 		scale_x_discrete("Treatment") +
 		scale_y_continuous("Firings / second", breaks=c(.01, .03, .1, .3, 1.0, 3) ) +
 		coord_trans(y="log10")
 
-	pdf_path <- paste0(output_base, "/firing_rate_by_treatment_", experiment_tag, "_", date_code(), ".pdf")
+	pdf_path <- paste0(output_base, "/firing_rate_by_treatment_", experiment$tag, "_", date_code(), ".pdf")
 	if(verbose){
-		cat("Saving firing_rate_by_treatment  plot for experiment '", experiment_tag, "' to '", pdf_path, "'\n", sep="")
+		cat("Saving firing_rate_by_treatment  plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
 	}
 	ggplot2::ggsave(pdf_path, width=10, height=10)
 
-	png_path <- paste0(output_base, "/firing_rate_by_treatment_", experiment_tag, "_", date_code(), ".png")
+	png_path <- paste0(output_base, "/firing_rate_by_treatment_", experiment$tag, "_", date_code(), ".png")
 	if(verbose){
-		cat("Saving firing_rate_by_treatment plot for experiment '", experiment_tag, "' to '", png_path, "'\n", sep="")
+		cat("Saving firing_rate_by_treatment plot for experiment '", experiment$tag, "' to '", png_path, "'\n", sep="")
 	}
 	ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
 
-	p
+	invisible(p)
 }

@@ -10,11 +10,8 @@
 #'  if there is spread in the average firing rate then this variation should be
 #'  accounted for in a model of effects of the treatment on the average firing rate
 #'
-#' firing:
-#'   data.frame with columns [neuron_index, timestamp, treatment]
-#'
-#' experiment_tag:
-#'   identifier for the experiment used in the figure subtitle and output filename
+#' experiment:
+#'   experiment dataset loaded with mema::load_firing_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -27,8 +24,7 @@
 #'
 #'@export
 firing_rate_by_neuron <- function(
-	firing,
-	experiment_tag,
+	exeriment,
 	plot_width=7,
 	plot_height=4,
 	output_base="product/figures",
@@ -49,19 +45,19 @@ firing_rate_by_neuron <- function(
 		ggplot2::geom_histogram(
 			aes(x=log(mean_firing_rate)),
 			bins=30) +
-		ggplot2::ggtitle("Per-neuron firing rate", subtitle=experiment_tag) +
+		ggplot2::ggtitle("Per-neuron firing rate", subtitle=experiment$tag) +
 		ggplot2::scale_x_continuous(
 			"Log(Firing / second)")
 
-	pdf_path <- paste0(output_base, "/firing_rate_by_neuron_", experiment_tag, "_", date_code(), ".pdf")
+	pdf_path <- paste0(output_base, "/firing_rate_by_neuron_", experiment$tag, "_", date_code(), ".pdf")
 	if(verbose){
-		cat("Saving firing_rate_by_neuron  plot for experiment '", experiment_tag, "' to '", pdf_path, "'\n", sep="")
+		cat("Saving firing_rate_by_neuron  plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
 	}
 	ggplot2::ggsave(pdf_path, width=10, height=10)
 
-	png_path <- paste0(output_base, "/firing_rate_by_neuron_", experiment_tag, "_", date_code(), ".png")
+	png_path <- paste0(output_base, "/firing_rate_by_neuron_", experiment$tag, "_", date_code(), ".png")
 	if(verbose){
-		cat("Saving firing_rate_by_neuron plot for experiment '", experiment_tag, "' to '", png_path, "'\n", sep="")
+		cat("Saving firing_rate_by_neuron plot for experiment '", experiment$tag, "' to '", png_path, "'\n", sep="")
 	}
 	ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
 

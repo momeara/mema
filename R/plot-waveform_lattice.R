@@ -6,11 +6,8 @@
 #'   Plot a grid of figures, with x-axis in microseconds and y-axis in voltage
 #'   One for each waveform in the waveform data.frame
 #'
-#' waveform:
-#'   data.frame with columns [neuron_index, timestamp, voltage]
-#'
-#' experiment_tag:
-#'   identifier for the experiment used in the figure subtitle and output filename
+#' experiment:
+#'   experiment dataset loaded with mema::load_firing_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -23,24 +20,23 @@
 #'
 #'@export
 waveform_lattice <- function(
-	waveform,
-	experiment_tag,
+	experiment,
 	plot_width=10,
 	plot_height=10,
 	output_base="product/figures",
 	verbose=TRUE){
 
-	p <- ggplot2::ggplot(data=waveform) +
+	p <- ggplot2::ggplot(data=experiment$waveform) +
 		ggplot2::theme_bw() +
 		ggplot2::geom_line(mapping=aes(x=time_step, y=voltage)) +
 		ggplot2::facet_wrap(~neuron_index) +
-		ggplot2::ggtitle("Neuron waveform cluster mean", subtitle=experiment_tag) +
+		ggplot2::ggtitle("Neuron waveform cluster mean", subtitle=experiment$tag) +
 		ggplot2::scale_x_continuous("microsecond") +
 		ggplot2::scale_y_continuous("Voltage")
 
-	pdf_path <- paste0(output_base, "/waveform_lattice_", experiment_tag, "_", date_code(), ".pdf")
+	pdf_path <- paste0(output_base, "/waveform_lattice_", experiment$tag, "_", date_code(), ".pdf")
 	if(verbose){
-		cat("Saving waveform_lattice plot for experiment '", experiment_tag, "' to '", pdf_path, "'\n", sep="")
+		cat("Saving waveform_lattice plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
 	}
 	ggplot2::ggsave(pdf_path, width=10, height=10)
 
@@ -50,5 +46,5 @@ waveform_lattice <- function(
 	}
 	ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
 
-	p
+	invisible(p)
 }

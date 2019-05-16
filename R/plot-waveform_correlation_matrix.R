@@ -5,11 +5,8 @@
 #'
 #'   Plot a correlation matrix as a heatmap between all waveforms in the experiment
 #'
-#' waveform:
-#'   data.frame with columns [neuron_index, timestamp, voltage]
-#'
-#' experiment_tag:
-#'   identifier for the experiment used in the figure subtitle and output filename
+#' experiment:
+#'   experiment dataset loaded with mema::load_firing_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -22,15 +19,14 @@
 #'
 #'@export
 waveform_correlation_matrix <- function(
-	waveform,
-	experiment_tag,
+	experiment,
 	plot_width=10,
 	plot_height=10,
 	output_base="product/figures",
 	verbose=TRUE){
 
 
-	correlations <- waveform %>%
+	correlations <- experiment$waveform %>%
 		reshape2::acast(time_step ~ neuron_index, value.var="voltage") %>%
 		cor()
 
@@ -49,17 +45,17 @@ waveform_correlation_matrix <- function(
 		Colv=as.dendrogram(o_row),
 		Rowv=as.dendrogram(o_row))
 
-	pdf_path <- paste0(output_base, "/waveform_correlation_matrix_", experiment_tag, "_", date_code(), ".pdf")
+	pdf_path <- paste0(output_base, "/waveform_correlation_matrix_", experiment$tag, "_", date_code(), ".pdf")
 	if(verbose){
-		cat("Saving waveform_correlation_matrix plot for experiment '", experiment_tag, "' to '", pdf_path, "'\n", sep="")
+		cat("Saving waveform_correlation_matrix plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
 	}
-	pdf("product/demo_waveform_correlation_matrix_190513.pdf", heigh=6, width=6)
+	pdf(pdf_path, heigh=6, width=6)
 	do.call(gplots::heatmap.2,args=args)
 	dev.off()
 
-	png_path <- paste0(output_base, "/waveform_correlation_matrix_", experiment_tag, "_", date_code(), ".png")
+	png_path <- paste0(output_base, "/waveform_correlation_matrix_", experiment$tag, "_", date_code(), ".png")
 	if(verbose){
-		cat("Saving waveform_correlation_matrix plot for experiment '", experiment_tag, "' to '", pdf_png, "'\n", sep="")
+		cat("Saving waveform_correlation_matrix plot for experiment '", experiment$tag, "' to '", pdf_png, "'\n", sep="")
 	}
 	png(png_path, units="in", heigh=plot_height, width=plot_width)
 	do.call(gplots::heatmap.2,args=args)

@@ -129,16 +129,20 @@ load_data <- function(
 		experiment_tag <- treatments_fname %>% basename %>% stringr::str_replace(".mat$", "")
 	}
 
+	experiment <- list(
+	    tag=experiment_tag,
+	    treatments=treatments,
+	    units=units,
+	    waveform=waveform) %>%
+	  structure(class="nema_experiment")
+	
 	if(save_to_file){
 		path <- paste0("intermediate_data/", experiment_tag, ".Rdata")
 		if(verbose){
-			cat("Saving units and waveform to '", path, "'\n", sep="")
+			cat("Saving experiment data to '", path, "'\n", sep="")
 		}
-		save(firing, waveform, file=path)
+		save(experiment, file=path)
 	}
 
-	noreturn <- list(
-		experiment_tag=experiment_tag,
-		units=units,
-		waveform=waveform)
+	invisible(experiment)
 }

@@ -15,11 +15,8 @@
 #'    If there is some lag to reach a stead state then the lines will look like they have a kink in it
 #'    if there is bursty or irregular spacing, then the spead off the diagonal will be substantial but symmetric
 #'
-#' firing:
-#'   data.frame with columns [neuron_index, timestamp, treatment]
-#'
-#' experiment_tag:
-#'   identifier for the experiment used in the figure subtitle and output filename
+#' experiment:
+#'   experiment dataset loaded with mema::load_firing_dataset(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
@@ -32,14 +29,13 @@
 #'
 #'@export
 firing_qqplot_by_treatment <- function(
-	firing,
-	experiment_tag,
+	experiment,
 	plot_width=7,
 	plot_height=4,
 	output_base="product/figures",
 	verbose=TRUE){
 
-	data <- firing %>%
+	data <- experiment$firing %>%
 		dplyr::group_by(neuron_index, treatment) %>%
 		dplyr::arrange(time_step) %>%
 		dplyr::mutate(cum_dist = row_number()/n()) %>%
@@ -60,21 +56,21 @@ firing_qqplot_by_treatment <- function(
 				group=neuron_index),
 			alpha=.8) +
 		ggplot2::facet_wrap(~treatment) +
-		ggplot2::ggtitle("QQ-plot of firing events over exposure", subtitle=experiment_tag) +
+		ggplot2::ggtitle("QQ-plot of firing events over exposure", subtitle=exeriment$tag) +
 		ggplot2::scale_x_continuous("Percent exposure", labels=scales::percent) +
 		ggplot2::scale_y_continuous("Percent counts observed", labels=scales::percent)
 
-	pdf_path <- paste0(output_base, "/firing_qqplot_by_treatment_", experiment_tag, "_", date_code(), ".pdf")
+	pdf_path <- paste0(output_base, "/firing_qqplot_by_treatment_", exeriment$tag, "_", date_code(), ".pdf")
 	if(verbose){
-		cat("Saving firing_qqplot_by_treatment  plot for experiment '", experiment_tag, "' to '", pdf_path, "'\n", sep="")
+		cat("Saving firing_qqplot_by_treatment  plot for experiment '", exeriment$tag, "' to '", pdf_path, "'\n", sep="")
 	}
 	ggplot2::ggsave(pdf_path, width=10, height=10)
 
-	png_path <- paste0(output_base, "/firing_qqplot_by_treatment_", experiment_tag, "_", date_code(), ".png")
+	png_path <- paste0(output_base, "/firing_qqplot_by_treatment_", exeriment$tag, "_", date_code(), ".png")
 	if(verbose){
-		cat("Saving firing_qqplot_by_treatment plot for experiment '", experiment_tag, "' to '", png_path, "'\n", sep="")
+		cat("Saving firing_qqplot_by_treatment plot for experiment '", exeriment$tag, "' to '", png_path, "'\n", sep="")
 	}
 	ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
 
-	p
+	invisible(p)
 }
