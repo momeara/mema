@@ -3,18 +3,18 @@
 
 #' Simple lattice plot of the waveforms
 #'
-#'   Plot a grid of figures, with x-axis in microseconds and y-axis in voltage
+#'   Plot a grid of plots, with x-axis in microseconds and y-axis in voltage
 #'   One for each waveform in the waveform data.frame
 #'
 #' experiment:
-#'   experiment dataset loaded with mema::load_dataset(...)
+#'   experiment dataset loaded with mema::load_experiment(...)
 #'
 #' plot_width/plot_height:
 #'   dimensions of the output plot
 #'
 #' returns:
 #'   the ggplot2
-#'   Saves the result to product/figures/waveform_lattice_<experiment_tag>_<date_code>.(pdf|png)
+#'   Saves the result to product/plots/waveform_lattice_<experiment_tag>_<date_code>.(pdf|png)
 #'   It save both .pdf and .png because it's easier to email etc small pngs
 #'   while for use in an a manuscript having the vector version means that it can be tweaked with illustrator
 #'
@@ -23,7 +23,7 @@ plot_waveform_lattice <- function(
 	experiment,
 	plot_width=10,
 	plot_height=10,
-	output_base="product/figures",
+	output_base="product/plots",
 	verbose=TRUE){
 
 	p <- ggplot2::ggplot(data=experiment$waveform) +
@@ -34,17 +34,26 @@ plot_waveform_lattice <- function(
 		ggplot2::scale_x_continuous("microsecond") +
 		ggplot2::scale_y_continuous("Voltage")
 
-	pdf_path <- paste0(output_base, "/waveform_lattice_", experiment$tag, "_", date_code(), ".pdf")
-	if(verbose){
-		cat("Saving waveform_lattice plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
-	}
-	ggplot2::ggsave(pdf_path, width=10, height=10)
+	if(!is.null(output_base)){
+	  if(!dir.exists(output_base)){
+	    if(verbose){
+	      cat("creating output directory '", output_base, "'\n", sep="")
+	    }
+	    dir.create(output_base, showWarnings = FALSE)
+	  }
 
-	png_path <- paste0(output_base, "/waveform_lattice_", experiment_tag, "_", date_code(), ".png")
-	if(verbose){
-		cat("Saving waveform_lattice plot for experiment '", experiment_tag, "' to '", png_path, "'\n", sep="")
+	  pdf_path <- paste0(output_base, "/waveform_lattice_", experiment$tag, "_", date_code(), ".pdf")
+	  if(verbose){
+	    cat("Saving waveform_lattice plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
+	  }
+	  ggplot2::ggsave(pdf_path, width=10, height=10)
+
+	  png_path <- paste0(output_base, "/waveform_lattice_", experiment_tag, "_", date_code(), ".png")
+	  if(verbose){
+	    cat("Saving waveform_lattice plot for experiment '", experiment_tag, "' to '", png_path, "'\n", sep="")
+	  }
+	  ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
 	}
-	ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
 
 	invisible(p)
 }

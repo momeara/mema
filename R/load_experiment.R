@@ -24,11 +24,12 @@
 #'    paste0("intermediate_data/", <experiment_tag>, ".Rdata")
 #'
 #' returns:
-#'    a list with the following elements
-#'      experiment_tag: <experiment_tag>
-#'      firings: tibble::tibble with columns [nuron_index, time_step, treatment] and a row for each detected firing
+#'    an experiment S3 class with the following elements
+#'      tag: <experiment_tag>
+#'      treatments: tibble::tibble with columns [treatment, begin, end]
+#'      firings: tibble::tibble with columns [nuron_index, time_step, treatment, begin, end] and a row for each detected firing
 #'      waveform: tibble::tibble with columns [neuron_index, time_step, voltage] for each neuron
-#'
+#'      class attribute: mema_experiment
 #'@export
 load_experiment <- function(
 	units_fname,
