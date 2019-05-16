@@ -30,9 +30,8 @@ plot_firing_rate_by_neuron <- function(
 	output_base="product/plots",
 	verbose=TRUE){
 
-	total_exposure <- experiment$firing %>%
-		dplyr::distinct(treatment) %>%
-		dplry::mutate(exposure = end[1] - begin[1]) %>%
+	total_exposure <- experiment$treatment %>%
+		dplyr::mutate(exposure = end[1] - begin[1]) %>%
 		dplyr::summarize(total_exposure=sum(exposure)) %>%
 		magrittr::extract2("total_exposure")
 
