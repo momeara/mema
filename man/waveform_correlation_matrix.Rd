@@ -4,18 +4,15 @@
 \alias{waveform_correlation_matrix}
 \title{plot Correlation matrix of waveforms}
 \usage{
-waveform_correlation_matrix(waveform, experiment_tag, plot_width = 10,
+waveform_correlation_matrix(experiment, plot_width = 10,
   plot_height = 10, output_base = "product/figures", verbose = TRUE)
 }
 \description{
 Plot a correlation matrix as a heatmap between all waveforms in the experiment
 }
 \details{
-waveform:
-  data.frame with columns [neuron_index, timestamp, voltage]
-
-experiment_tag:
-  identifier for the experiment used in the figure subtitle and output filename
+experiment:
+  experiment dataset loaded with mema::load_firing_dataset(...)
 
 plot_width/plot_height:
   dimensions of the output plot

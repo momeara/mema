@@ -4,19 +4,16 @@
 \alias{waveform_lattice}
 \title{Simple lattice plot of the waveforms}
 \usage{
-waveform_lattice(waveform, experiment_tag, plot_width = 10,
-  plot_height = 10, output_base = "product/figures", verbose = TRUE)
+waveform_lattice(experiment, plot_width = 10, plot_height = 10,
+  output_base = "product/figures", verbose = TRUE)
 }
 \description{
 Plot a grid of figures, with x-axis in microseconds and y-axis in voltage
   One for each waveform in the waveform data.frame
 }
 \details{
-waveform:
-  data.frame with columns [neuron_index, timestamp, voltage]
-
-experiment_tag:
-  identifier for the experiment used in the figure subtitle and output filename
+experiment:
+  experiment dataset loaded with mema::load_firing_dataset(...)
 
 plot_width/plot_height:
   dimensions of the output plot

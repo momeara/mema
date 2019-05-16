@@ -4,8 +4,8 @@
 \alias{firing_qqplot_by_treatment}
 \title{Firing QQ-plot by treatment}
 \usage{
-firing_qqplot_by_treatment(firing, experiment_tag, plot_width = 7,
-  plot_height = 4, output_base = "product/figures", verbose = TRUE)
+firing_qqplot_by_treatment(experiment, plot_width = 7, plot_height = 4,
+  output_base = "product/figures", verbose = TRUE)
 }
 \description{
 Lattice plot for each treatment, where in each cell
@@ -21,11 +21,8 @@ If the counts occure independently through time as is assumed in a poisson proce
    If there is some lag to reach a stead state then the lines will look like they have a kink in it
    if there is bursty or irregular spacing, then the spead off the diagonal will be substantial but symmetric
 
-firing:
-  data.frame with columns [neuron_index, timestamp, treatment]
-
-experiment_tag:
-  identifier for the experiment used in the figure subtitle and output filename
+experiment:
+  experiment dataset loaded with mema::load_firing_dataset(...)
 
 plot_width/plot_height:
   dimensions of the output plot

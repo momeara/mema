@@ -23,7 +23,7 @@
 #'
 #'@export
 firing_rate_by_treatment <- function(
-	exeriment
+	exeriment,
 	plot_width=6,
 	plot_height=6,
 	output_base="product/figures",

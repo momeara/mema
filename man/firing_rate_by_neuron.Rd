@@ -4,8 +4,8 @@
 \alias{firing_rate_by_neuron}
 \title{Firing rate by neuron}
 \usage{
-firing_rate_by_neuron(firing, experiment_tag, plot_width = 7,
-  plot_height = 4, output_base = "product/figures", verbose = TRUE)
+firing_rate_by_neuron(exeriment, plot_width = 7, plot_height = 4,
+  output_base = "product/figures", verbose = TRUE)
 }
 \description{
 histogram of average firing rate
@@ -16,11 +16,8 @@ histogram of average firing rate
 if there is spread in the average firing rate then this variation should be
  accounted for in a model of effects of the treatment on the average firing rate
 
-firing:
-  data.frame with columns [neuron_index, timestamp, treatment]
-
-experiment_tag:
-  identifier for the experiment used in the figure subtitle and output filename
+experiment:
+  experiment dataset loaded with mema::load_firing_dataset(...)
 
 plot_width/plot_height:
   dimensions of the output plot

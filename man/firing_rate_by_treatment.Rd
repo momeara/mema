@@ -4,8 +4,8 @@
 \alias{firing_rate_by_treatment}
 \title{Dot/boxplot plot of average firing rate by treatment}
 \usage{
-firing_rate_by_treatment(firing, experiment_tag, plot_width = 6,
-  plot_height = 6, output_base = "product/figures", verbose = TRUE)
+firing_rate_by_treatment(exeriment, plot_width = 6, plot_height = 6,
+  output_base = "product/figures", verbose = TRUE)
 }
 \description{
 Make a plot where
@@ -15,11 +15,8 @@ Make a plot where
      overlay points for each neuron jittering horizontally to allow them to be seen more easily
 }
 \details{
-firing:
-  data.frame with columns [neuron_index, timestamp, treatment, begin, end]
-
-experiment_tag:
-  identifier for the experiment used in the figure subtitle and output filename
+experiment:
+  experiment dataset loaded with mema::load_firing_dataset(...)
 
 plot_width/plot_height:
   dimensions of the output plot
