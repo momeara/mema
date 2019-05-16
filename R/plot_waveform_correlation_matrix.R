@@ -31,7 +31,7 @@ plot_waveform_correlation_matrix <- function(
 		cor()
 
 	d <- dist(correlations)
-	o_row <- seriate(d, method="OLO", control=NULL)[[1]]
+	o_row <- seriation::seriate(d, method="OLO", control=NULL)[[1]]
 	args=list(
 		trace="none",
 		density.info="none",
