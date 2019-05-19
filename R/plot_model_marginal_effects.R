@@ -12,40 +12,43 @@
 #'
 #'@export
 plot_model_marginal_effects <- function(
-  model_fit,
-  model_tag,
-  plot_width=6,
-  plot_height=6,
-  output_base="product/plots",
-  verbose=TRUE,
-  ...){
-  
-  marginal_effects <- brms::marginal_effects(model_fit, ...)
-  
-  p <- plot(marginal_effects) +
-    ggplot2::theme_bw() +
-    ggplot2::ggtitle("Model Fit Marginal Effects", subtitle=model_tag)
-  
-  if(!is.null(output_base)){
-    if(!dir.exists(output_base)){
-      if(verbose){
-        cat("creating output directory '", output_base, "'\n", sep="")
-      }
-      dir.create(output_base, showWarnings = FALSE)
-    }
-    
-    pdf_path <- paste0(output_base, "/marginal_effects_", model_tag, "_", date_code(), ".pdf")
-    if(verbose){
-      cat("Saving marginal effects plot for model fit '", model_tag, "' to '", pdf_path, "'\n", sep="")
-    }
-    ggplot2::ggsave(pdf_path, width=10, height=10)
-    
-    png_path <- paste0(output_base, "/firing_rate_by_neuron_", model_tag, "_", date_code(), ".png")
-    if(verbose){
-      cat("Saving marginal effects plot for model fit '", model_tag, "' to '", png_path, "'\n", sep="")
-    }
-    ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
-  }
-  
-  invisible(p)
+	model_fit,
+	model_tag,
+	plot_width=6,
+	plot_height=6,
+	output_base="product/plots",
+	verbose=TRUE,
+	...){
+
+	marginal_effects <- brms::marginal_effects(model_fit, ...)
+
+	p <- plot(
+	  marginal_effects,
+	  jitter_width=.2,
+	  theme=ggplot2::theme_bw(),
+	  ask=FALSE) +
+		ggplot2::ggtitle("Model Fit Marginal Effects", subtitle=model_tag)
+
+	if(!is.null(output_base)){
+		if(!dir.exists(output_base)){
+			if(verbose){
+				cat("creating output directory '", output_base, "'\n", sep="")
+			}
+			dir.create(output_base, showWarnings = FALSE)
+		}
+
+		pdf_path <- paste0(output_base, "/marginal_effects_", model_tag, "_", date_code(), ".pdf")
+		if(verbose){
+			cat("Saving marginal effects plot for model fit '", model_tag, "' to '", pdf_path, "'\n", sep="")
+		}
+		ggplot2::ggsave(pdf_path, width=plot_width, height=plot_height)
+
+		png_path <- paste0(output_base, "/firing_rate_by_neuron_", model_tag, "_", date_code(), ".png")
+		if(verbose){
+			cat("Saving marginal effects plot for model fit '", model_tag, "' to '", png_path, "'\n", sep="")
+		}
+		ggplot2::ggsave(png_path, width=plot_width, height=plot_height)
+	}
+
+	invisible(p)
 }

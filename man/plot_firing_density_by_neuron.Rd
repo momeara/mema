@@ -4,7 +4,7 @@
 \alias{plot_firing_density_by_neuron}
 \title{Firing smoothed per-neuron firing density by neuron across the experiment}
 \usage{
-plot_firing_density_by_neuron(experiment, plot_width = 7,
+plot_firing_density_by_neuron(experiment, plot_width = 10,
   plot_height = 4, output_base = "product/plots", verbose = TRUE)
 }
 \description{

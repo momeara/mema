@@ -24,7 +24,7 @@
 #'@export
 plot_firing_density_by_neuron <- function(
 	experiment,
-	plot_width=7,
+	plot_width=10,
 	plot_height=4,
 	output_base="product/plots",
 	verbose=TRUE){
@@ -53,7 +53,7 @@ plot_firing_density_by_neuron <- function(
       mapping=ggplot2::aes(
         x=time_step,
         y=neuron_index,
-        color=normalized_log_firing_density)) +
+        fill=normalized_log_firing_density)) +
     ggplot2::geom_rect(
       data= experiment$treatments,
       mapping=ggplot2::aes(xmin=begin, xmax=end, ymin=-Inf, ymax=Inf, group=treatment),
@@ -70,7 +70,7 @@ plot_firing_density_by_neuron <- function(
     ggplot2::scale_y_continuous(
       name='Neuron Index',
       expand=c(0,0)) +
-    ggplot2::scale_color_viridis_c("Per-neuron normalized log firing density") +
+    ggplot2::scale_fill_viridis_c("Per-neuron normalized log firing density") +
     ggplot2::theme(legend.position="bottom") +
     ggplot2::theme()
 
@@ -86,7 +86,7 @@ plot_firing_density_by_neuron <- function(
 		if(verbose){
 			cat("Saving firing density by neuron plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
 		}
-		ggplot2::ggsave(pdf_path, width=10, height=10)
+		ggplot2::ggsave(pdf_path, width=plot_width, height=plot_height)
 
 		png_path <- paste0(output_base, "/firing_density_by_neuron_", experiment$tag, "_", date_code(), ".png")
 		if(verbose){

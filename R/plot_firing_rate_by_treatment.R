@@ -60,7 +60,7 @@ plot_firing_rate_by_treatment <- function(
 	  if(verbose){
 	    cat("Saving firing_rate_by_treatment  plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
 	  }
-	  ggplot2::ggsave(pdf_path, width=10, height=10)
+	  ggplot2::ggsave(pdf_path, width=plot_width, height=plot_height)
 
 	  png_path <- paste0(output_base, "/firing_rate_by_treatment_", experiment$tag, "_", date_code(), ".png")
 	  if(verbose){

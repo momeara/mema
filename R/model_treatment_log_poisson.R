@@ -57,7 +57,7 @@ model_treatment_log_poisson <- function(
 
 	fit_log_poisson <- brms::brm(
 		data=exposure_counts,
-		formula=count ~ stats::offset(log(exposure)) + treatment + (1|neuron_index),
+		formula=count ~ offset(log(exposure)) + treatment + (1|neuron_index),
 		family=stats::poisson(link="log"),
 		save_model=model_path,
 		...)
