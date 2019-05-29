@@ -24,9 +24,9 @@ plot_model_marginal_effects <- function(
 
 	p <- plot(
 	  marginal_effects,
-	  jitter_width=.2,
-	  theme=ggplot2::theme_bw(),
-	  ask=FALSE) +
+	  point_args=list(width=.2),
+	  ask=FALSE)$treatment +
+	  ggplot2::theme_bw() +
 		ggplot2::ggtitle("Model Fit Marginal Effects", subtitle=model_tag)
 
 	if(!is.null(output_base)){

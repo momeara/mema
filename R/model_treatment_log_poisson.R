@@ -50,7 +50,7 @@ model_treatment_log_poisson <- function(
 
 	if(!is.na(output_base)){
 		model_path <- paste0(output_base, "/model_log_poisson_", experiment$tag, ".stan")
-		cat("Saving stan model to '", model_path, "'", sep="")
+		cat("Saving stan model to '", model_path, "'\n", sep="")
 	} else {
 		model_path <- NULL
 	}
@@ -78,7 +78,7 @@ model_treatment_log_poisson <- function(
 
 		summary_path <- paste0(output_base, "/model_log_poisson_summary_", experiment$tag, ".txt")
 		if(verbose){
-			cat("Saving log-poisson model summary to '", summary_path)
+			cat("Saving log-poisson model summary to '", summary_path, "'\n", sep="")
 		}
 		summary(fit_log_poisson) %>%
 			capture.output(file=summary_path)
