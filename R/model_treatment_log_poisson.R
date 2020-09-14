@@ -67,7 +67,10 @@ model_treatment_log_poisson <- function(
 			if(verbose){
 				cat("creating output directory '", output_base, "'\n", sep="")
 			}
-			dir.create(output_base, showWarnings = FALSE)
+			dir.create(
+					output_base,
+					showWarnings = FALSE,
+					recursive = TRUE)
 		}
 
 		fit_path <- paste0(output_base, "/model_log_poisson_fit_", experiment$tag, ".Rdata")

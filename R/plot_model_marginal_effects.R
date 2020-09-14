@@ -34,7 +34,10 @@ plot_model_marginal_effects <- function(
 			if(verbose){
 				cat("creating output directory '", output_base, "'\n", sep="")
 			}
-			dir.create(output_base, showWarnings = FALSE)
+			dir.create(
+					output_base,
+					showWarnings = FALSE,
+					recusrive = TRUE)
 		}
 
 		pdf_path <- paste0(output_base, "/marginal_effects_", model_tag, "_", date_code(), ".pdf")

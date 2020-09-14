@@ -59,7 +59,10 @@ plot_lines_firing_rate_by_treatment <- function(
 	    if(verbose){
 	      cat("creating output directory '", output_base, "'\n", sep="")
 	    }
-	    dir.create(output_base, showWarnings = FALSE)
+	    dir.create(
+					output_base,
+					showWarnings = FALSE,
+					recursive = TRUE)
 	  }
 
 	  pdf_path <- paste0(output_base, "/lines_firing_rate_by_treatment_", experiment$tag, "_", date_code(), ".pdf")

@@ -79,7 +79,10 @@ plot_firing_density_by_neuron <- function(
 			if(verbose){
 				cat("creating output directory '", output_base, "'\n", sep="")
 			}
-			dir.create(output_base, showWarnings = FALSE)
+			dir.create(
+					output_base,
+					showWarnings = FALSE,
+					recursive = TRUE)
 		}
 
 		pdf_path <- paste0(output_base, "/firing_density_by_neuron_", experiment$tag, "_", date_code(), ".pdf")

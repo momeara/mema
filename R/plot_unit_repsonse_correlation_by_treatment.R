@@ -45,7 +45,10 @@ plot_unit_response_by_treatment <- function(
 	    if(verbose){
 	      cat("creating output directory '", output_base, "'\n", sep="")
 	    }
-	    dir.create(output_base, showWarnings = FALSE)
+	    dir.create(
+					output_base,
+					showWarnings = FALSE,
+					recursive = TRUE)
 	  }
 
 		p <- GGally::ggpairs(
