@@ -46,7 +46,7 @@ plot_firing_density_by_neuron <- function(
           normalized_log_firing_density=log(firing_density/max(firing_density)+1)
         )
     })
-  
+
   p <- ggplot2::ggplot(data=data) +
     ggplot2::theme_bw() +
     ggplot2::geom_tile(

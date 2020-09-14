@@ -44,9 +44,7 @@ plot_firing_rate_by_treatment <- function(
 			mapping=ggplot2::aes(x=treatment, y=count/exposure), width=.15, height=0) +
 		ggplot2::ggtitle("Neuron Firing Rate by Condition", subtitle=experiment$tag) +
 		ggplot2::scale_x_discrete("Treatment") +
-		ggplot2::scale_y_continuous("Firings / second", breaks=c(.01, .03, .1, .3, 1.0, 3) ) +
-		ggplot2::coord_trans(y="log10")
-
+		scale_y_log_firing_rate()
 
 	if(!is.null(output_base)){
 	  if(!dir.exists(output_base)){

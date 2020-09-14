@@ -45,8 +45,8 @@ plot_firing_rate_by_neuron <- function(
 			mapping=ggplot2::aes(x=log(mean_firing_rate)),
 			bins=30) +
 		ggplot2::ggtitle("Per-neuron firing rate", subtitle=experiment$tag) +
-		ggplot2::scale_x_continuous(
-			"Log(Firing / second)")
+		scale_y_log_firing_rate()
+
 
 	if(!is.null(output_base)){
 		if(!dir.exists(output_base)){

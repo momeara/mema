@@ -39,19 +39,20 @@ plot_lines_firing_rate_by_treatment <- function(
 	p <- ggplot2::ggplot(data=exposure_counts) +
 		ggplot2::theme_bw() +
 		ggplot2::geom_boxplot(
-			mapping=ggplot2::aes(x=treatment, y=count/exposure)) +
+			mapping=ggplot2::aes(x=treatment, y=count/exposure),
+			size=1.3) +
 	  ggplot2::geom_line(
-	    mapping=ggplot2::aes(x=treatment, y=count/exposure, color=experiment),
-	    color=experiment) +
+			mapping=ggplot2::aes(x=treatment, y=count/exposure, group=neuron_index),
+			size=.5,
+			alpha=.4,
+			color="blue") +
 		ggplot2::geom_point(
-			mapping=ggplot2::aes(x=treatment, y=count/exposure, color=experiment),
+			mapping=ggplot2::aes(x=treatment, y=count/exposure),
 			size=1.2,
 			alpha=.8) +
 		ggplot2::ggtitle("Neuron Firing Rate by Condition", subtitle=experiment$tag) +
 		ggplot2::scale_x_discrete("Treatment") +
-		ggplot2::scale_y_continuous("Hz")
-		#ggplot2::coord_trans(y="log10")
-
+		scale_y_log_firing_rate()
 
 	if(!is.null(output_base)){
 	  if(!dir.exists(output_base)){
@@ -63,7 +64,7 @@ plot_lines_firing_rate_by_treatment <- function(
 
 	  pdf_path <- paste0(output_base, "/lines_firing_rate_by_treatment_", experiment$tag, "_", date_code(), ".pdf")
 	  if(verbose){
-	    cat("Saving lines_firing_rate_by_treatment  plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
+	    cat("Saving lines_firing_rate_by_treatment plot for experiment '", experiment$tag, "' to '", pdf_path, "'\n", sep="")
 	  }
 	  ggplot2::ggsave(pdf_path, width=plot_width, height=plot_height)
 

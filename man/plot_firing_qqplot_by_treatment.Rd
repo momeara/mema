@@ -4,8 +4,9 @@
 \alias{plot_firing_qqplot_by_treatment}
 \title{Firing QQ-plot by treatment}
 \usage{
-plot_firing_qqplot_by_treatment(experiment, plot_width = 7,
-  plot_height = 4, output_base = "product/plots", verbose = TRUE)
+plot_firing_qqplot_by_treatment(experiment, highlight_units = NULL,
+  plot_width = 7, plot_height = 4, output_base = "product/plots",
+  verbose = TRUE)
 }
 \description{
 Lattice plot for each treatment, where in each cell

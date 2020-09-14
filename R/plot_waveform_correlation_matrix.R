@@ -69,5 +69,4 @@ plot_waveform_correlation_matrix <- function(
 	  do.call(gplots::heatmap.2,args=args)
 	  dev.off()
 	}
-
 }

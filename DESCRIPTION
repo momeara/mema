@@ -14,6 +14,7 @@ Imports:
     assertthat,
     brms,
     dplyr,
+    GGally,
     ggplot2,
     gplots,
     knitr,
@@ -34,8 +35,11 @@ Collage: 'load_firing_data.R'
     'plot_firing_rate_by_neuron.R'
     'plot_firing_rate_by_treatment.R'
     'plot_firing_qqplot_by_treatment.R'
+    'plot_lines_firing_rate_by_treatment.R'
     'plot_waveform_correlation_matrix.R'
     'plot_waveform_lattice.R'
+    'plot_unit_response_correlaiton_by_treatment.R'
+    'scales.R'
     'r_utils.R'
 RoxygenNote: 6.1.1
 Encoding: UTF-8

@@ -30,6 +30,7 @@
 #'@export
 plot_firing_qqplot_by_treatment <- function(
 	experiment,
+	highlight_units=NULL,
 	plot_width=7,
 	plot_height=4,
 	output_base="product/plots",
@@ -40,6 +41,22 @@ plot_firing_qqplot_by_treatment <- function(
 		dplyr::arrange(time_step) %>%
 		dplyr::mutate(cum_dist = dplyr::row_number()/dplyr::n()) %>%
 		dplyr::ungroup()
+
+	# add points to anchor begin and end 
+	data <- dplyr::bind_rows(
+			data %>%
+					dplyr::distinct(neuron_index, treatment, .keep_all=TRUE) %>%
+							dplyr::mutate(
+									time_step = begin,
+									cum_dist = 0),
+			data,
+			data %>%
+					dplyr::distinct(neuron_index, treatment, .keep_all=TRUE) %>%
+							dplyr::mutate(
+									time_step = end,
+									cum_dist = 1))
+
+
 
 	p <- ggplot2::ggplot(data=data) +
 		ggplot2::theme_bw() +
@@ -59,6 +76,19 @@ plot_firing_qqplot_by_treatment <- function(
 		ggplot2::ggtitle("QQ-plot of firing events over exposure", subtitle=experiment$tag) +
 		ggplot2::scale_x_continuous("Percent exposure", labels=scales::percent) +
 		ggplot2::scale_y_continuous("Percent counts observed", labels=scales::percent)
+
+	if(!is.null(highlight_units)){
+			p <- p +
+				ggplot2::geom_line(
+					data=data %>%
+						dplyr::filter(neuron_index %in% highlight_units),
+					mapping=ggplot2::aes(
+						x=(time_step-begin)/(end-begin),
+						y=cum_dist,
+						group=neuron_index),
+					color="red",
+					size=2.5)
+	}
 
 
 	if(!is.null(output_base)){

@@ -136,9 +136,9 @@ load_experiment <- function(
 	    firing=firing,
 	    waveform=waveform) %>%
 	  structure(class="mema_experiment")
-	
+
 	if(save_to_file){
-		path <- paste0("intermediate_data/", experiment_tag, ".Rdata")
+		path <- paste0("intermediate_data/experiment_datasets/", experiment_tag, ".Rdata")
 		if(verbose){
 			cat("Saving experiment data to '", path, "'\n", sep="")
 		}
