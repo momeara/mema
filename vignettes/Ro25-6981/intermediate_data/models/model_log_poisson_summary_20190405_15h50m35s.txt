@@ -1,0 +1,26 @@
+ Family: poisson 
+  Links: mu = log 
+Formula: count ~ stats::offset(log(exposure)) + treatment + (1 | neuron_index) 
+   Data: exposure_counts (Number of observations: 517) 
+Samples: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+         total post-warmup samples = 4000
+
+Group-Level Effects: 
+~neuron_index (Number of levels: 76) 
+              Estimate Est.Error l-95% CI u-95% CI Eff.Sample Rhat
+sd(Intercept)     1.49      0.11     1.33     1.70          3 2.73
+
+Population-Level Effects: 
+                         Estimate Est.Error l-95% CI u-95% CI Eff.Sample Rhat
+Intercept                   21.37    117.61  -179.33   207.86          5 2.37
+stats::offsetlogexposure    -3.38     22.15   -38.52    34.40          5 2.37
+treatmentDA1uM               1.20      4.18    -5.93     7.82          5 2.37
+treatmentwash1               4.88     21.74   -32.17    39.36          5 2.37
+treatmentRo100nM             1.18      3.26    -4.36     6.35          5 2.37
+treatmentRo1uM               1.26      3.82    -5.23     7.31          5 2.37
+treatmentwash2               1.37      3.82    -5.13     7.42          5 2.37
+treatmentquin                5.24     21.65   -31.68    39.60          5 2.37
+
+Samples were drawn using sampling(NUTS). For each parameter, Eff.Sample 
+is a crude measure of effective sample size, and Rhat is the potential 
+scale reduction factor on split chains (at convergence, Rhat = 1).
