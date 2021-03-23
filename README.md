@@ -1,13 +1,15 @@
 # mema: Multi-Electrode Midbrain Analysis
 
-This is a set of tools for analysing multi-electrode recordings of the midbrain brain firing
+This is a set of tools for analysing multi-electrode electrophysiology recordings
 The package has been developed by the O'Meara lab at UMich and the Margolis Lab at UCSF.
+
+
 
 ## to install
 From within R,
 
-    install.packages("devtools")
-    devtools::install_github("momeara/mema")
+    install.packages("remotes")
+    remotes::install_github("momeara/mema")
 
 
 ## Documentation

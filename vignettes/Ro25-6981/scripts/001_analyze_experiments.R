@@ -1,7 +1,8 @@
 # -*- tab-width:2;indent-tabs-mode:t;show-trailing-whitespace:t;rm-trailing-spaces:t -*-
 # vi: set ts=2 noet:
 
-
+library(plyr)
+library(tidyverse)
 library(purrr)
 library(mema)
 mc.cores <- 4
