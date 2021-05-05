@@ -4,8 +4,13 @@
 \alias{plot_waveform_lattice}
 \title{Simple lattice plot of the waveforms}
 \usage{
-plot_waveform_lattice(experiment, plot_width = 10, plot_height = 10,
-  output_base = "product/plots", verbose = TRUE)
+plot_waveform_lattice(
+  experiment,
+  plot_width = 10,
+  plot_height = 10,
+  output_base = "product/plots",
+  verbose = TRUE
+)
 }
 \description{
 Plot a grid of plots, with x-axis in microseconds and y-axis in voltage

@@ -5,9 +5,15 @@
 \title{plot_width/plot_height:
   dimensions of the output plot}
 \usage{
-plot_model_marginal_effects(model_fit, model_tag, plot_width = 6,
-  plot_height = 6, output_base = "product/plots", verbose = TRUE,
-  ...)
+plot_model_marginal_effects(
+  model_fit,
+  model_tag,
+  plot_width = 6,
+  plot_height = 6,
+  output_base = "product/plots",
+  verbose = TRUE,
+  ...
+)
 }
 \description{
 returns:

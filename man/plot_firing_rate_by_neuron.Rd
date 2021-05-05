@@ -4,8 +4,13 @@
 \alias{plot_firing_rate_by_neuron}
 \title{Firing rate by neuron}
 \usage{
-plot_firing_rate_by_neuron(experiment, plot_width = 7, plot_height = 4,
-  output_base = "product/plots", verbose = TRUE)
+plot_firing_rate_by_neuron(
+  experiment,
+  plot_width = 7,
+  plot_height = 4,
+  output_base = "product/plots",
+  verbose = TRUE
+)
 }
 \description{
 histogram of average firing rate

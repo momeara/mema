@@ -4,9 +4,14 @@
 \alias{plot_unit_response_by_treatment}
 \title{Unit Response Correlation by Treatment}
 \usage{
-plot_unit_response_by_treatment(experiment, highlight_units = NULL,
-  plot_width = 10, plot_height = 10, output_base = "product/plots",
-  verbose = TRUE)
+plot_unit_response_by_treatment(
+  experiment,
+  highlight_units = NULL,
+  plot_width = 10,
+  plot_height = 10,
+  output_base = "product/plots",
+  verbose = TRUE
+)
 }
 \description{
 Grid of treatment vs. treatment plots, in each cell

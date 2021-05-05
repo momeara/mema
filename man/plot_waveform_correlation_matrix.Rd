@@ -4,8 +4,13 @@
 \alias{plot_waveform_correlation_matrix}
 \title{plot Correlation matrix of waveforms}
 \usage{
-plot_waveform_correlation_matrix(experiment, plot_width = 10,
-  plot_height = 10, output_base = "product/plots", verbose = TRUE)
+plot_waveform_correlation_matrix(
+  experiment,
+  plot_width = 10,
+  plot_height = 10,
+  output_base = "product/plots",
+  verbose = TRUE
+)
 }
 \description{
 Plot a correlation matrix as a heatmap between all waveforms in the experiment

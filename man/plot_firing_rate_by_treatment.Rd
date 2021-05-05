@@ -4,8 +4,13 @@
 \alias{plot_firing_rate_by_treatment}
 \title{Dot/boxplot plot of average firing rate by treatment}
 \usage{
-plot_firing_rate_by_treatment(experiment, plot_width = 6,
-  plot_height = 6, output_base = "product/plots", verbose = TRUE)
+plot_firing_rate_by_treatment(
+  experiment,
+  plot_width = 6,
+  plot_height = 6,
+  output_base = "product/plots",
+  verbose = TRUE
+)
 }
 \description{
 Make a plot where

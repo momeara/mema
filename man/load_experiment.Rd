@@ -4,8 +4,13 @@
 \alias{load_experiment}
 \title{Load firing data for an experiment}
 \usage{
-load_experiment(units_fname, treatments_fname, experiment_tag = NULL,
-  save_to_file = TRUE, verbose = TRUE)
+load_experiment(
+  units_fname,
+  treatments_fname,
+  experiment_tag = NULL,
+  save_to_file = TRUE,
+  verbose = TRUE
+)
 }
 \description{
 units_fname:

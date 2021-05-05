@@ -4,8 +4,12 @@
 \alias{model_treatment_log_poisson}
 \title{Model average firing as a function treatment using log-poisson regression}
 \usage{
-model_treatment_log_poisson(experiment,
-  output_base = "intermediate_data/models", verbose = TRUE, ...)
+model_treatment_log_poisson(
+  experiment,
+  output_base = "intermediate_data/models",
+  verbose = TRUE,
+  ...
+)
 }
 \description{
 experiment:
@@ -19,17 +23,17 @@ returns:
 
 Build a bayesian heirarchical model for the number of firings as a function of
 
-exposure with a weight fixed at 1
+ exposure with a weight fixed at 1
    => offset(log(exposure))
    https://github.com/paul-buerkner/brms/issues/146
 
-treatment as a fixed effect
+ treatment as a fixed effect
    => treatment
 
-average neuron firing rate as a random effet
+ average neuron firing rate as a random effet
    => (1|neuron_index)
 
-assume a general linear model with log-poisson link
+ assume a general linear model with log-poisson link
 
 This uses the brms package front end to the stan bayesian modeling framework
 }

@@ -3,7 +3,7 @@ Type: Package
 Version: 0.0.0.9000
 Title: Multi-Electrode Midbrain Analysis
 Description: Analyze multi-electro recordings of slices of the mid-brain
-Authors@R: person(given="Matthew", family="O'Meara", email = "mattjomeara@gmail.com",
+Authors@R: person(given="Matthew", family="O'Meara", email = "maom@umich.edu",
     role = c("aut", "cre"))
 URL: http://github.com/momeara/mema
 BugReports: https://github.com/momeara/mema/issues
@@ -23,6 +23,8 @@ Imports:
     purrr,
     readr,
     reshape2,
+    R.matlab,
+    fuzzyjoin,
     seriation,
     stringr,
     tidyr,
@@ -41,7 +43,7 @@ Collage: 'load_firing_data.R'
     'plot_unit_response_correlaiton_by_treatment.R'
     'scales.R'
     'r_utils.R'
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Encoding: UTF-8
 Suggests: knitr,
     rmarkdown
