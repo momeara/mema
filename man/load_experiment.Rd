@@ -22,8 +22,8 @@ units_fname:
 1) the time steps (in seconds) when it fired during the experiment
     2) the waveform of the cluster center across all firings
 
-treatments_fname:
-  a .csv file with columns [treatment,begin,end] for each treatment in the experiment
+treatments:
+  a .csv file with columns [begin, treatment] for each treatment in the experiment
   to help detect problems, an error is returned if the treatments are not disjoint and given chronologically
 
 experiment_tag:
