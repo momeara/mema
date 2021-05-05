@@ -31,5 +31,5 @@ Load an experiment
 	experiment <- mema::load_experiment(
 	    units_fname = "<experiment_tag>/units.<timestamp>.mat",
 		treatments_fname = "<experiment_tag>/treatmentinfo.<timestamp>.csv",
-		experiment_tag = "<experiment_tag")
+		experiment_tag = "<experiment_tag>")
 
