@@ -11,8 +11,8 @@
 #'     1) the time steps (in seconds) when it fired during the experiment
 #'     2) the waveform of the cluster center across all firings
 #'
-#' treatments_fname:
-#'   a .csv file with columns [treatment,begin,end] for each treatment in the experiment
+#' treatments:
+#'   a .csv file with columns [begin, treatment] for each treatment in the experiment
 #'   to help detect problems, an error is returned if the treatments are not disjoint and given chronologically
 #'
 #' experiment_tag:
@@ -50,13 +50,15 @@ load_experiment <- function(
 
 		treatments <- readr::read_csv(
 			file=treatments_fname,
+			col_names = c("begin", "treatment"),
 			col_types=readr::cols(
 				treatment = readr::col_character(),
-				begin = readr::col_double(),
-				end = readr::col_double())) %>%
-			dplyr::mutate(
+				begin = readr::col_double())) %>%
+			dplyr::transmute(
 				# this is to ensure the correct order of the conditions in plots etc.
-				treatment = factor(treatment, labels=treatment, levels=treatment))
+				treatment = factor(treatment, labels=treatment, levels=treatment),
+				begin,
+				end = dplyr::lead(begin))
 
 		if(verbose){
 			cat("found '", nrow(treatments), "' treatments\n", sep="")
