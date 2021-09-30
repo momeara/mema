@@ -12,16 +12,20 @@
 #'     2) the waveform of the cluster center across all firings
 #'
 #' treatments:
-#'   a .csv file with columns [begin, treatment] for each treatment in the experiment
-#'   to help detect problems, an error is returned if the treatments are not disjoint and given chronologically
+#'   Either 
+#'     a data.frame: with columns [treatment, begin, end] for each treatment in the experiment
+#'   or:
+#'      a .csv file with columns [treatment, begin, end] for each treatment in the experiment
+#'
+#'   to help detect problems, an warning is given if the treatments are not disjoint and given chronologically
 #'
 #' experiment_tag:
 #'   identifier for the experiment, set in the return data structure and path to save to disk
-#'   if null (default), then use treatments_fname %>% basename %>% str_replace(".mat$", "")
+#'   if null (default), then use treatments %>% basename %>% str_replace(".mat$", "")
 #'
-#' save_to_file:
-#'    if TRUE then the return value is saved to
-#'    paste0("intermediate_data/", <experiment_tag>, ".Rdata")
+#' save_path:
+#'    save dataset to <save_path>/<experiment_tag>
+#'    Default value: intermediate_data/experiment_datasets
 #'
 #' returns:
 #'    a mema_experiment S3 class with the following elements
@@ -33,38 +37,52 @@
 #'@export
 load_experiment <- function(
 	units_fname,
-	treatments_fname,
+	treatments,
 	experiment_tag=NULL,
-	save_to_file=TRUE,
+	save_path = "intermediate_data/experiment_datasets",
 	verbose=TRUE) {
-
+  
+  # If requesting to save the dataset exists, make sure it does before trying to read it in.
+  if(!is.null(save_path)) {
+    if (!dir.exists(save_path)){
+      if (verbose){
+        cat("Creating save path '", save_path, "' ...\n", sep = "")
+      }
+      dir.create(save_path)
+    }
+  }
+  
+  
 	### LOAD TREATMENTS
-	if(!is.null(treatments_fname)){
-		if(verbose){
-			cat("Loading treatment schedule from '", treatments_fname, "' ... ", sep="")
-		}
-
-		if(!stringr::str_detect(treatments_fname, ".csv$")){
-			cat("WARNING: treatments_fname='", treatments_fname, "' should have '.csv' extension.\n", sep="")
-		}
-
-		treatments <- readr::read_csv(
-			file=treatments_fname,
-			col_names = c("begin", "treatment"),
-			col_types=readr::cols(
-				treatment = readr::col_character(),
-				begin = readr::col_double())) %>%
-			dplyr::transmute(
-				# this is to ensure the correct order of the conditions in plots etc.
-				treatment = factor(treatment, labels=treatment, levels=treatment),
-				begin,
-				end = dplyr::lead(begin))
-
+	if(!is.null(treatments)){
+	  if(class(treatments) == "character"){
+	    
+  		if(verbose){
+  			cat("Loading treatment schedule from '", treatments, "' ... ", sep="")
+  		}
+  
+  		if(!stringr::str_detect(treatments, ".csv$")){
+  			cat("WARNING: treatments='", treatments, "' should have '.csv' extension.\n", sep="")
+  		}
+  
+  		treatments <- readr::read_csv(
+  			file=treatments,
+  			col_types=readr::cols(
+  			  treatment = readr::col_character(),
+  			  begin = readr::col_double(),
+  			  end = readr::col_double())) %>%
+  			dplyr::transmute(
+  				# this is to ensure the correct order of the conditions in plots etc.
+  				treatment = factor(treatment, labels=treatment, levels=treatment),
+  				begin,
+  				end)
+	  }
+	  
 		if(verbose){
 			cat("found '", nrow(treatments), "' treatments\n", sep="")
 		}
 
-		# check each treatment isd well formed
+		# check each treatment is well formed
 		for(i in 1:nrow(treatments)){
 			if(treatments$begin[i] >= treatments$end[i]){
 				stop(paste0(
@@ -111,7 +129,7 @@ load_experiment <- function(
 				time_step = as.numeric(time_steps))
 		})
 
-	if(!is.na(treatments_fname)){
+	if(!is.na(treatments)){
 		firing <- firing %>%
 			fuzzyjoin::fuzzy_inner_join(
 				treatments,
@@ -139,8 +157,14 @@ load_experiment <- function(
 	    waveform=waveform) %>%
 	  structure(class="mema_experiment")
 
-	if(save_to_file){
-		path <- paste0("intermediate_data/experiment_datasets/", experiment_tag, ".Rdata")
+	if (!is.null(save_path)){
+	  if (!dir.exists(save_path)){
+	    if (verbose){
+	      cat("Creating save path '", save_path, "' ...\n", sep = "")
+	    }
+	    dir.create(save_path)
+	  }
+		path <- paste0(save_path, "/", experiment_tag, ".Rdata")
 		if(verbose){
 			cat("Saving experiment data to '", path, "'\n", sep="")
 		}
