@@ -1,0 +1,321 @@
+---
+title: "MED64 Cross-Correlation Heatmap Analysis"
+author: "Walter German"
+output: html_notebook
+---
+
+This is notebook of cross-correlation analysis of MED-64 data
+
+```{r imports_chunk, echo=FALSE}
+library(tidyverse)
+library(mema)
+library(gplots)
+library(functional)
+```
+
+### Dataset Filenames
+```{r}
+data_dir <- "/Users/walter/Data/margolis/HB_139_DAMGO_10-15/825_12h24m37s"
+units_fname = "20200825_12h24m37s_units_ts.mat"
+treatment = "20200825_12h24m37s_treatments_col_tx.csv"
+experiment_tag = "825_12h24m37s"
+save_path = "/Users/walter/Data/margolis/r_output"
+```
+
+
+### Load Dataset
+```{r load_dataset}
+# load the data
+setwd(data_dir)
+
+experiment <- mema::load_experiment(
+  units_fname = units_fname,
+  treatment = treatment,
+  experiment_tag = experiment_tag,
+  save_path = save_path)
+```
+
+#### Define the functions for histograms 
+```{r}
+unit_tx_activity <- function(df, unit, tx) {
+  unit_tx = experiment[["firing"]] %>%
+    filter(neuron_index == unit & treatment == tx)
+  unit_tx[["time_step"]]
+}
+
+fr_bins <- function(df, unit, tx, brks) {
+  unit_fr <-  unit_tx_activity(df, unit, tx)
+  bins_fr <- hist(unit_fr, breaks = brks, plot = FALSE)
+  bins_fr$count
+} 
+```
+
+
+#### Creat bins for correlations
+```{r}
+units <- c(unique(experiment$firing$neuron_index))
+brks = seq(0,600,0.1)  # histogram bins
+fr_bins_bk <- Curry(fr_bins, 
+                    brks = brks)
+tx <- 'Start Baseline'
+
+## This line takes a while, linear on limit
+units_fr_bins <-units %>%
+  map(invisible(fr_bins_bk), df = experiment, tx = tx)
+```
+
+
+#### Create Dataframe of Firing Rate Bins
+```{r}
+# create an empty dataframe
+# This has index columns of x y unit numbers. 
+# and then value columns for each pairwise unit xcorr
+# thus rows equal num_units * num_units
+xcorr_df <- data.frame(unitx = integer(), 
+                       unity= integer(),
+                       lag= double(), 
+                       acf= double())
+  
+
+for (x in units) {
+  for (y in units) {
+      ccf_out = ccf(x = units_fr_bins[[x]], 
+                    y = units_fr_bins[[y]], 
+                    lag.max = 40,
+                    plot = FALSE)
+      ccf_rows = data.frame(unitx = x,
+                            unity = y,
+                            lag = ccf_out$lag,
+                            acf = ccf_out$acf)
+      xcorr_df <- rbind(xcorr_df, ccf_rows)
+  }
+}
+```
+
+
+
+```{r}
+# zero lag xcorr only
+xcorr_z <- xcorr_df %>%
+  filter(lag == 0) %>%
+  subset(select = -c(lag ))
+```
+
+
+```{r}
+# order by unit to inspect 
+xcorr_z_order <- xcorr_z[order(xcorr_z$unitx, xcorr_z$unity),]
+
+glimpse(xcorr_z_order)
+```
+
+
+```{r}
+# create wide dataframe for heatmap2 input
+xcorr_z_wide <- xcorr_z %>%
+  pivot_wider(names_from = unitx, values_from = acf )
+```
+
+
+
+```{r, fig.height=3, fig.width=3}
+# primary purpose of running heatmap2 is to access its automatic ordering
+# of the units to create aesthetic display. Better results than seriate.
+plot_heatmap2 <- xcorr_z_wide %>%
+  dplyr::select(-unity) %>%
+  as.matrix() %>%
+  heatmap.2(dendrogram="none",
+            key=FALSE,
+            trace = 'none',
+            main = "zero lag correlogram",
+            xlab = "unit number",)
+
+heatmap_order <- plot_heatmap2$rowInd
+```
+
+
+```{r}
+# Create four dataframes. Each has dimensions that are needed as inputs 
+# depending on the type of final plot desired. Character labels for units
+# allows for flexibility in axis tick labels.
+# df_long  # labels as numeric and units labeled correctly
+# df_long_char  # labels as character and units labeled correctly.
+#
+# df_long_order   # labels as numeric and renumbered so "unit 1" is renamed to
+#                 # where heatmap2 order looks best
+# df_long_order_char  # labels as character and renumbered
+
+
+# default df names are character, even if passed numeric
+unit_names <- units # as.character(units) 
+
+df_wide_corr_z <- data.frame(xcorr_z_wide %>%
+  dplyr::select(-unity) %>%
+  as.matrix())
+
+colnames(df_wide_corr_z) <- unit_names
+rownames(df_wide_corr_z) <- colnames(df_wide_corr_z)
+
+reorder <- function(df, new_col_order) {
+  df[new_col_order]
+}
+
+rename_cols <- function(df, new_col_names) {
+  colnames(df) <- new_col_names
+  df
+}
+
+col_to_num <- function(df, col_name) {
+  df[col_name] <- as.numeric(as.matrix(df[col_name]))
+  df
+}
+
+col_to_char <- function(df, col_name) {
+  df[col_name] <- as.character(as.matrix(df[col_name]))
+  df
+}
+
+
+df_wide <- df_wide_corr_z %>%
+  add_column(unitx = unit_names, .before = 1)
+
+df_long <- df_wide %>%
+  pivot_longer(cols = as.character(units), names_to = "unity", values_to = "acf") %>%
+  col_to_num("unity")
+
+df_long_char <- df_long %>%
+  col_to_char("unitx") %>%
+  col_to_char("unity")
+  
+df_wide_order <- df_wide_corr_z %>%
+  reorder(heatmap_order) %>%
+  t() %>%
+  data.frame() %>%
+  rename_cols(unit_names) %>%
+  reorder(heatmap_order)  %>%
+  add_column(unitx = unit_names, .before = 1) %>%
+  rename_cols(c("unitx", unit_names))
+
+df_long_order <- df_wide_order %>%
+  pivot_longer(cols = as.character(units), names_to = "unity", values_to = "acf") %>%
+  col_to_num("unity")
+
+df_long_order_char <- df_long_order %>%
+  col_to_char("unitx") %>%
+  col_to_char("unity")
+```
+
+
+
+```{r}
+# global changes to saved plot formatting
+theme_update(plot.title = element_text(hjust = 0.5))
+```
+
+
+### Heatmap with units labeled with correct axis tick order
+[heatmap example code](https://r-charts.com/correlation/heat-map-ggplot2/)
+
+```{r}
+# https://r-charts.com/correlation/heat-map-ggplot2/
+# replace xcorr_z with df_long_order or df_long_char
+
+plot <- ggplot2::ggplot(df_long_char, 
+                        aes(x = unitx, y = unity, fill = acf)) +
+  geom_tile(color = "white",
+            lwd = 0.1,
+            linetype = 1) +
+  scale_x_discrete(name ="Unit X", 
+                    limits=heatmap_order_str) +
+  scale_y_discrete(name ="Unit Y", 
+                    limits=heatmap_order_str) +
+  ggplot2::scale_fill_viridis_c(
+    "Correlation",
+    limits = c(0, 1),
+    breaks = c(0, .25, .5, .75, 1),
+    expand = c(0, 0)) +
+  # scale_fill_gradient(low = "grey", high = "red")+
+  coord_fixed() +
+  ggplot2::guides(fill = ggplot2::guide_colourbar(nbin = 100, barwidth = 10, barheight = 1)) +
+  #guides(fill = guide_colourbar(barwidth = 20,barheight = 0.8, title = "correlation")) +
+  ggtitle("Unit Cross-Correlation Heatmap") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  #ggplot2::scale_x_discrete("") +
+  #ggplot2::scale_y_discrete("") +
+  ggplot2::theme(legend.position = "bottom",
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggplot2::ggsave(
+  filename = "../product/cross_correlation_2022-01-04_tick-order.pdf",
+  plot = plot,
+  width = 8,
+  height = 9)
+
+plot
+```
+
+
+## Analyse the high correlation pairs
+Zoom in onto the highly correlated units to look for signs of mislabeled events
+ 
+```{r}
+# zero lag xcorr only
+xcorr_z <- xcorr_df %>%
+  filter(lag == 0) %>%
+  subset(select = -c(lag ))
+
+# order by acf value to find large xcorr events
+xcorr_z_max <- xcorr_z[order(desc(xcorr_z$acf)),] %>%
+  filter(unitx < unity)
+
+# Show where cut off is for the xcorr
+plot(xcorr_z_max$acf,
+     main = "Distribution of cross-correlation values at zero lag",
+     xlab = "ordered by unit*unit x-corr value",
+     ylab = "Cross-Correlation")
+```
+
+
+
+```{r}
+# high x-correlation cutoff value 
+cutoff <- 3
+
+# order by acf value to find large xcorr events
+xcorr_z_max_cut <- xcorr_z_max[1:cutoff,]
+
+hi_x_units <- unique(append(xcorr_z_max_cut$unitx, xcorr_z_max_cut$unity))
+
+# also take those that are anti-correlated acf < 0 
+xcorr_df_sub <- xcorr_df %>%
+  filter(unitx %in% hi_x_units) %>%
+  filter(unity %in% hi_x_units)
+```
+
+
+```{r}
+# plot the grid of select xcorrs
+ggplot(xcorr_df_sub, aes(lag, acf)) + 
+  geom_bar(stat="identity") +
+  facet_grid(unitx ~ unity) +
+  ggtitle("Cross-correlograms of highest cross-correlation units") +
+  labs(x = "lag (100ms)")
+```
+
+### Display Units with high Firing Rate
+Display Units with high Firing Rate to check that they are also
+high cross-correlation
+
+```{r}
+units_fr <- units %>%
+  map(fr_bins, df = experiment, tx = tx, brks = brks) %>%
+  map(mean) %>%
+  unlist()
+
+df_firing_rate <- data.frame(unit=units, firing_rate=units_fr)
+
+head(df_firing_rate[order(desc(df_firing_rate$firing_rate)),], 10)
+```
+
+
+
