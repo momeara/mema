@@ -21,7 +21,7 @@
 #'
 #' experiment_tag:
 #'   identifier for the experiment, set in the return data structure and path to save to disk
-#'   if null (default), then use treatments %>% basename %>% str_replace(".mat$", "")
+#'   if null (default), then use treatments |> basename |> str_replace(".mat$", "")
 #'
 #' save_path:
 #'    save dataset to <save_path>/<experiment_tag>
@@ -49,14 +49,14 @@ load_experiment <- function(
       if (verbose) {
         cat("Creating save path '", save_path, "' ...\n", sep = "")
       }
-      dir.create(save_path)
+      dir.create(save_path, recursive = TRUE)
     }
   }
 
 
   ### LOAD TREATMENTS
   if (!is.null(treatments)) {
-    if (class(treatments) == "character") {
+    if (methods::is(treatments, "character")) {
 
       if (verbose) {
         cat("Loading treatment schedule from '", treatments, "' ... ", sep = "")
@@ -72,7 +72,7 @@ load_experiment <- function(
         col_types = readr::cols(
           treatment = readr::col_character(),
           begin = readr::col_double(),
-          end = readr::col_double())) %>%
+          end = readr::col_double())) |>
         dplyr::transmute(
           # this is to ensure the correct order of the conditions in plots etc.
           treatment = factor(treatment, labels = treatment, levels = treatment),
@@ -86,10 +86,13 @@ load_experiment <- function(
 
     # check each treatment is well formed
     for (i in 1:nrow(treatments)) {
-      if (treatments$begin[i] >= treatments$end[i]) {
+				if (
+						!((is.na(treatments$begin[i]) && !is.na(treatments$end[i])) ||
+						(!is.na(treatments$begin[i]) && is.na(treatments$end[i])) ||
+						(treatments$begin[i] < treatments$end[i]))) {
         stop(paste0(
-          "treatment '", i, "'='", treatments$treatment[i], "'",
-          "has begin='", treatments$begin[i], "' >= end='", treatments$end[i], "'"))
+          "treatment ", i, ": '", treatments$treatment[i], "' ",
+          "has begin=", treatments$begin[i], " >= end=", treatments$end[i], ""))
       }
     }
 
@@ -109,7 +112,7 @@ load_experiment <- function(
   }
 
   if (!stringr::str_detect(units_fname, ".mat$")) {
-    cat("WARNING: units_fname='", units_fname, "' should have extension .mat\n", sep="")
+    warning("units_fname='", units_fname, "' should have extension .mat\n", sep = "")
   }
 
   raw_data <- R.matlab::readMat(units_fname)
@@ -121,18 +124,29 @@ load_experiment <- function(
   n_neurons <- dim(raw_data$Unit)[3]
 
   if (verbose) {
-    cat(" found firing data for '", n_neurons, "' neurons\n", sep="")
+    cat(" found firing data for '", n_neurons, "' neurons\n", sep = "")
   }
 
-  firing <- raw_data$Unit[firing_dim, 1, 1:n_neurons] %>%
+  firing <- raw_data$Unit[firing_dim, 1, 1:n_neurons] |>
     purrr::imap_dfr(function(time_steps, neuron_index) {
       tibble::tibble(
         neuron_index = neuron_index,
         time_step = as.numeric(time_steps))
     })
+	if (verbose) {
+			cat("found ", nrow(firing), " firing events.\n", sep = "")
+	}
 
-  if (!is.na(treatments)) {
-    firing <- firing %>%
+	if (is.na(treatments$end[nrow(treatments)])) {
+		experiment_end <- max(firing$time_step, na.rm = TRUE) + 1
+		if (verbose) {
+			cat("The last treatment endpoint is missing assume it goes just beyond the last time_step ", experiment_end, "\n", sep = "")
+		}
+		treatments$end[nrow(treatments)] <- experiment_end
+	}
+
+  if (!is.null(treatments)) {
+    firing <- firing |>
       fuzzyjoin::fuzzy_inner_join(
         treatments,
         by = c("time_step" = "begin", "time_step" = "end"),
@@ -140,7 +154,7 @@ load_experiment <- function(
   }
 
   ### LOAD WAVEFORM
-  waveform <- raw_data$Unit[waveform_dim, 1, 1:n_neurons] %>%
+  waveform <- raw_data$Unit[waveform_dim, 1, 1:n_neurons] |>
     purrr::imap_dfr(function(voltages, neuron_index) {
       tibble::tibble(
         neuron_index = neuron_index,
@@ -148,15 +162,15 @@ load_experiment <- function(
         voltage = as.numeric(voltages))
     })
 
-  if (is.null(experiment_tag)){
-    experiment_tag <- units_fname %>% basename %>% stringr::str_replace(".mat$", "")
+  if (is.null(experiment_tag)) {
+    experiment_tag <- units_fname |> basename() |> stringr::str_replace(".mat$", "")
   }
 
   experiment <- list(
       tag = experiment_tag,
       treatments = treatments,
       firing = firing,
-      waveform = waveform) %>%
+      waveform = waveform) |>
     structure(class = "mema_experiment")
 
   if (!is.null(save_path)) {

@@ -32,7 +32,7 @@ Imports:
 License: MIT + file LICENSE
 Collage: 'load_firing_data.R'
     'model_treatment_log_poisson.R'
-    'plot_model_marginal_effects.R'
+    'plot_model_conditional_effects.R'
     'plot_firing_density_by_neuron.R'
     'plot_firing_rate_by_neuron.R'
     'plot_firing_rate_by_treatment.R'
@@ -43,7 +43,7 @@ Collage: 'load_firing_data.R'
     'plot_unit_response_correlaiton_by_treatment.R'
     'scales.R'
     'r_utils.R'
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
 Encoding: UTF-8
 Suggests: knitr,
     rmarkdown

@@ -6,9 +6,9 @@
 \usage{
 load_experiment(
   units_fname,
-  treatments_fname,
+  treatments,
   experiment_tag = NULL,
-  save_to_file = TRUE,
+  save_path = "intermediate_data/experiment_datasets",
   verbose = TRUE
 )
 }
@@ -23,16 +23,20 @@ units_fname:
     2) the waveform of the cluster center across all firings
 
 treatments:
-  a .csv file with columns [begin, treatment] for each treatment in the experiment
-  to help detect problems, an error is returned if the treatments are not disjoint and given chronologically
+  Either
+    a data.frame: with columns [treatment, begin, end] for each treatment in the experiment
+  or:
+     a .csv file with columns [treatment, begin, end] for each treatment in the experiment
+
+  to help detect problems, an warning is given if the treatments are not disjoint and given chronologically
 
 experiment_tag:
   identifier for the experiment, set in the return data structure and path to save to disk
-  if null (default), then use treatments_fname %>% basename %>% str_replace(".mat$", "")
+  if null (default), then use treatments |> basename |> str_replace(".mat$", "")
 
-save_to_file:
-   if TRUE then the return value is saved to
-   paste0("intermediate_data/", <experiment_tag>, ".Rdata")
+save_path:
+   save dataset to <save_path>/<experiment_tag>
+   Default value: intermediate_data/experiment_datasets
 
 returns:
    a mema_experiment S3 class with the following elements

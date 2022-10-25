@@ -49,22 +49,27 @@ exposure_counts <- firing_trimmed %>%
 #
 # Attempt at trying to model the fact that individual neurons may behave differently, yet consistently across conditions
 fit_poisson <- brms::brm(
-  data=exposure_counts %>% dplyr::filter(condition != "wash3"),
-  formula=count ~ offset(log(exposure)) + condition + (1|neuron_index),
-  family=poisson("log"))
+  data = exposure_counts %>% dplyr::filter(condition != "wash3"),
+  formula = count ~ offset(log(exposure)) + condition + (1 | neuron_index),
+  family = poisson("log"))
 
 summary(fit_poisson)
 summary(fit_poisson) %>%
-  capture.output(file="product/demo_fit_poisson_summary_190514.txt")
+  capture.output(file = "product/demo_fit_poisson_summary_190514.txt")
 brms::posterior_summary(fit_poisson)
-brms::marginal_effects(fit_poisson)
-ggplot2::ggsave("product/demo_fit_poisson_marginal_effects_190514.pdf", width=6, height=6)
-ggplot2::ggsave("product/demo_fit_poisson_marginal_effects_190514.png", width=6, height=6)
+brms::conditional_effects(fit_poisson)
+ggplot2::ggsave(
+  "product/demo_fit_poisson_conditional_effects_190514.pdf",
+  width = 6,
+  height = 6)
+ggplot2::ggsave("product/demo_fit_poisson_condition_effects_190514.png",
+  width = 6,
+  height = 6)
 brms::LOO(fit_poisson)
 
 hypothesis_tests01 <- brms::hypothesis(
-  x=fit_poisson,
-  hypothesis=c(
+  x = fit_poisson,
+  hypothesis = c(
     "conditionDA = conditionwash1",
     "conditionwash1 = conditionRo100nM",
     "conditionwash1 = conditionRo1uM",
@@ -73,6 +78,6 @@ hypothesis_tests01 <- brms::hypothesis(
     "conditionRo100nM = conditionRo1uM",
     "conditionRo1uM = conditionRoPDA",
     "conditionRoPDA = conditionwash2"),
-  alpha=0.01)
+  alpha = 0.01)
 
 
